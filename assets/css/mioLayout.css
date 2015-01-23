@@ -1,0 +1,202 @@
+/*
+	general format layout
+*/
+.subTableHeader{
+    display: block;
+  	font-size: 12px;
+  	padding-top: 5px;
+  	line-height: 1.42857143;
+  	color: #777777;
+  	white-space: nowrap;
+}
+.tableInfo{
+	list-style-type: none;
+	padding:5px;
+}
+/*
+	for any div with id = target + idx number display none
+*/
+div[id*=target]{
+	display: none;
+}
+div[id*=addProduct]{
+	display: none;
+}
+table.table-collapsed{
+	width:auto;
+}
+.mioTbhead{
+	font-size: 15px;  
+	text-decoration: none;
+	cursor: pointer;
+	color: #333;
+}
+.mioTbhead:hover{
+	text-decoration: none;
+	cursor: pointer;
+	color: #333;
+	text-shadow: 2px 2px 4px #3B3B3B;
+}
+.sortasc:after{
+	content: "⬆";︎
+	
+}
+.sortdesc:after{
+	content: "⬇︎";
+}
+.mioMargin{
+	margin-top: 150px;
+}
+.formAddSupplier{
+	
+	float: left;
+    display: block;
+    margin-right: 10px;
+    margin-bottom: 20px;
+    width: 250px;
+  	height: 34px;
+	padding: 6px 12px;
+	font-size: 14px;
+	line-height: 1.42857143;
+	color: #555555;
+	background-color: #ffffff;
+	background-image: none;
+	border: 1px solid #cccccc;
+	border-radius: 4px;
+	-webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+	box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+	-webkit-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+	-o-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+	transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+}
+.formAddSupplier:focus{
+    border-color: #171717;
+    outline: 0;
+    -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(23, 23, 23, 0.6);
+    box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(23, 23, 23, 0.6);
+}
+.formAddSupplier::-moz-placeholder{
+    color: #777777;
+    opacity: 1;
+}
+.formAddSupplier:-ms-input-placeholder{
+    color: #777777;
+}
+.formAddSupplier::-webkit-input-placeholder{
+    color: #777777;
+}
+.mioMarginBtn{
+	margin-top: 10px;
+	width: 230px;
+}
+.mioFont{
+	font-family: 'Ubuntu', sans-serif;
+}
+.footer{
+	padding-top: 19px;
+	color: #777;
+}
+.mioDocument{
+	font-family: 'Ubuntu', sans-serif;
+	background: #ebebeb;
+}
+.title-format{
+	font-family: 'Ubuntu', sans-serif;
+	color: #ebebeb;
+	text-align: center;	
+}
+.position{
+	font-family: 'Ubuntu', sans-serif;
+	text-align: center;
+}
+.mioHeader{
+	width: 100%;
+	font-family: 'Ubuntu', sans-serif;
+	padding-top: 7px;
+	padding-bottom: 10px;
+	background: #2b2b2b;
+	color: #ebebeb;
+}
+.mioCopyrights{
+	font-size: 10px;
+	float: right;
+	padding-right: 20px;
+	margin-top: -30px;
+}
+.mioInfo{
+	font-family: 'Ubuntu', sans-serif;
+	font-size: 17px;
+	color: #2b2b2b;
+	text-align: center;
+}
+.mioSuccess{
+	text-align: center;
+	color: #169f16;
+}
+.mioFailed{
+	color: #d9534f;
+}
+.mioError{
+	text-align: center;
+	color: #d9534f;
+}
+.mioCenter{
+	text-align: center;
+}
+/*
+	forms format layout
+*/
+.form-login{
+  font-family: 'Ubuntu', sans-serif;
+  max-width: 330px;
+  padding: 15px;
+  margin: 0 auto;
+  z-index: -1;
+}
+.form-login .form-login-heading,
+.form-login .checkbox{
+  margin-bottom: 10px;
+}
+.form-login .checkbox{
+  font-weight: normal;
+}
+.form-login .form-control{
+  position: relative;
+  height: auto;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  padding: 10px;
+  font-size: 16px;
+}
+.form-login .form-control:focus{
+  z-index: 2;
+}
+.form-login input[type="email"]{
+  margin-bottom: -1px;
+  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 0;
+}
+.form-login input[type="password"]{
+  margin-bottom: 10px;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+}
+/*
+	user menu layout
+*/
+.mioInterface{
+	font-family: 'Ubuntu';
+	color: #2b2b2b;
+	background: transparent;
+}
+.mioWelcome{
+	text-align: left;
+	padding-left: 15px;
+	font-size: 21px;
+}
+.subInfo{
+	text-align: left;
+	padding-left: 15px;
+	font-size: 17px;
+}
