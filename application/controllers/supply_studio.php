@@ -193,7 +193,7 @@ class Supply_Studio extends CI_Controller {
 	*  printing supplier page if the user
 	*  is logged in otherwise redirects to login page
 	*/
-	public function supplier($sortBy = 'supplierCompanyName', $sortOrder = 'asc', $offset = 0){
+	public function suppliers($sortBy = 'supplierCompanyName', $sortOrder = 'asc', $offset = 0){
 		if($this->session->userdata('isLoggedIn')){
 
 			$limit = 20;
@@ -233,8 +233,13 @@ class Supply_Studio extends CI_Controller {
 			$data['pagination'] = $this->pagination->create_links();
 			$data['sortOrder'] = $sortOrder;
 			$data['sortBy'] = $sortBy;
-			$this->load->view('view_navbar', $data);
+
+			$companyName = $this->userModel->getFromUsers("companyName", "userId", $this->session->userdata('userId'));
+			$data['companyName'] = $companyName;
+
+			$this->load->view('view_dash_header', $data);
 			$this->load->view('view_supplier', $data);
+			$this->load->view('modals/add-supplier', $data);
 			$this->load->view('view_footer');
 		}
 		else{
@@ -612,15 +617,15 @@ class Supply_Studio extends CI_Controller {
 			if($this->supplierModel->addSupplier($this->session->userdata('userId'))){
 				echo "success";
 				$this->form_validation->set_message('supplierValidation', 'Supplier added to database');
-				redirect('supplier');
+				redirect('suppliers');
 			}
 			else{
 				$this->form_validation->set_message('supplierValidation', 'Could not add supplier to database');
-				$this->supplier();
+				$this->suppliers();
 			}
 		}
 		else{
-			$this->supplier();
+			$this->suppliers();
 		}
 	}
 
@@ -639,11 +644,11 @@ class Supply_Studio extends CI_Controller {
 			}
 			else{
 				$this->form_validation->set_message('productValidation', 'Could not add product to database');
-				$this->supplier();
+				$this->suppliers();
 			}
 		}
 		else{
-			$this->supplier();
+			$this->suppliers();
 		}
 	}
 
