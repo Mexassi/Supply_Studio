@@ -4,7 +4,7 @@
     <svg class="dash-header-nav-icon icon-cog"><use xlink:href="#icon-cog"></use></svg>
   </a>
   <ul class="dash-header-nav">
-    <li id="businessName" class="dash-header-nav-business-name">Business Name</li>
+    <li id="businessName" class="dash-header-nav-business-name"><?= stripslashes($companyName);?></li>
     <li><a href="<?= base_url('members') ?>">Dashboard</a></li>
     <li><a href="<?= base_url('orders') ?>">Orders</a></li>
     <li><a href="<?= base_url('suppliers') ?>">Suppliers</a></li>

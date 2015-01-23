@@ -146,7 +146,9 @@ class Supply_Studio extends CI_Controller {
 			$data['pagination'] = $this->pagination->create_links();
 			$data['sortOrder'] = $sortOrder;
 			$data['sortBy'] = $sortBy;
-			$this->load->view('view_navbar', $data);
+			$companyName = $this->userModel->getFromUsers("companyName", "userId", $this->session->userdata('userId'));
+			$data['companyName'] = $companyName;
+			$this->load->view('view_dash_header', $data);
 			$this->load->view('view_product', $data);
 			$this->load->view('view_footer');
 

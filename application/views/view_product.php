@@ -6,7 +6,7 @@
 		<br>
 		<div class="container mioCenter">
 			<?php
-				
+
 				$form = array('class' => 'form-login', 'role' => 'form');
 				echo form_open('products', $form);
 				$i = 1;
@@ -20,13 +20,13 @@
 				$submitSelect = array('class' => 'btn-sm btn-primary ', 'value' => 'show');
 				echo "<br>".form_submit($submitSelect);
 				echo form_close();
-				
+
 			?>
 			<div>
-				
+
 			</div>
-			
-		</div>	
+
+		</div>
 	</div>
 	<div class='jumbotron mioFont'>
 		<h3 style="text-align:center;">Your Products List</h3>
@@ -36,7 +36,7 @@
 				<thead>
 					<tr>
 						<?php
-		
+
 						  $data = array('class' => 'mioTbhead');
 							foreach ($productFields as $productFieldsName => $productField){
 								if($sortBy == $productFieldsName){
@@ -68,7 +68,7 @@
 						$divInfo = "<div class='mioHidden' id='".$id."'>";
 						//embedding bootstrap jquery function
 						$button = "<button class='btn-sm btn-warning' type='button' onclick=\"$('#".$id."').toggle();\">".$value."</button>";
-						
+
 						echo "<tr>";
 						echo "<td>".$button.$divInfo."<ul class='tableInfo'>".$pricelLabel.$price.$descriptLabel.$description."</ul></div></td>";
 						//echo "<td>".stripslashes($this->supplierModel->getSupplierName($row['supplierId']))."</td>";
@@ -94,3 +94,30 @@
 	</div>
 </div>
 
+<div class="container">
+	<button data-toggle="modal" data-target="#addProductModal" class="btn btn-primary btn-block btn-add">New <svg class="icon icon-xs icon-plus"><use xlink:href="#icon-plus"></use></svg></button>
+	<div class="table-responsive">
+		<table id="productsTable" class="table-order table table-hover">
+			<colgroup></colgroup>
+			<colgroup></colgroup>
+			<colgroup></colgroup>
+			<colgroup></colgroup>
+			<colgroup></colgroup>
+			<thead>
+				<tr>
+					<th>#</th>
+					<th>Supplier</th>
+					<th>Orders Made</th>
+					<th>Products</th>
+					<th>Total Paid</th>
+				</tr>
+			</thead>
+			<tbody id="productsTableContent" class="products-table-content">
+			<?php foreach ($productList as $row): ?>
+
+			<?php endforeach; ?>
+
+			</tbody>
+		</table>
+	</div>
+</div>
