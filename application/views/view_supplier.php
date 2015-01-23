@@ -28,7 +28,7 @@
 								echo form_open('editSupplier');
 								$supplierName = array('name' => 'supplierName', 'type' => 'hidden', 'value' => $supplier['supplierCompanyName']);
 								echo form_input($supplierName);
-								$submit = array('class' => 'btn btn-sm btn-default', 'value' => 'Edit');
+								$submit = array('class' => 'btn btn-xs btn-default', 'value' => 'Edit');
 								echo form_submit($submit);
 								echo form_close();
 							?>

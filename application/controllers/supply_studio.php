@@ -261,6 +261,10 @@ class Supply_Studio extends CI_Controller {
 			$data['history'] = "";
 			$data['support'] = "";
 			$data['productName'] = $this->input->post('productName');
+
+			$companyName = $this->userModel->getFromUsers("companyName", "userId", $this->session->userdata('userId'));
+			$data['companyName'] = $companyName;
+
 			$this->load->view('view_dash_header', $data);
 			$this->load->view('view_editProduct', $data);
 			$this->load->view('view_footer');
@@ -287,7 +291,7 @@ class Supply_Studio extends CI_Controller {
 
 			$companyName = $this->userModel->getFromUsers("companyName", "userId", $this->session->userdata('userId'));
 			$data['companyName'] = $companyName;
-			
+
 			$this->load->view('view_dash_header', $data);
 			$this->load->view('view_editSupplier', $data);
 			$this->load->view('view_footer');
@@ -314,6 +318,10 @@ class Supply_Studio extends CI_Controller {
 			$data['history'] = "";
 			$data['support'] = "";
 			$data['supplierName'] = $this->input->post('supplierName');
+
+			$companyName = $this->userModel->getFromUsers("companyName", "userId", $this->session->userdata('userId'));
+			$data['companyName'] = $companyName;
+
 			$this->load->view('view_dash_header', $data);
 			$this->load->view('view_deleteSupplier', $data);
 			$this->load->view('view_footer');
@@ -342,6 +350,10 @@ class Supply_Studio extends CI_Controller {
 			$data['products'] = "";
 			$data['history'] = "";
 			$data['support'] = "";
+
+			$companyName = $this->userModel->getFromUsers("companyName", "userId", $this->session->userdata('userId'));
+			$data['companyName'] = $companyName;
+
 			$this->load->view('view_dash_header', $data);
 			$this->load->model('productModel');
 			if($this->productModel->updateProduct($this->session->userdata('userId'))){
@@ -378,6 +390,10 @@ class Supply_Studio extends CI_Controller {
 			$data['products'] = "";
 			$data['history'] = "";
 			$data['support'] = "";
+
+			$companyName = $this->userModel->getFromUsers("companyName", "userId", $this->session->userdata('userId'));
+			$data['companyName'] = $companyName;
+
 			$this->load->view('view_dash_header', $data);
 			if($this->supplierModel->updateSupplier($this->session->userdata('userId'))){
 				echo "<div class='mioMargin'><p class='mioSuccess'>Supplier update successful</p></div>";
@@ -416,6 +432,10 @@ class Supply_Studio extends CI_Controller {
 			$data['products'] = "";
 			$data['history'] = "";
 			$data['support'] = "";
+
+			$companyName = $this->userModel->getFromUsers("companyName", "userId", $this->session->userdata('userId'));
+			$data['companyName'] = $companyName;
+
 			$this->load->view('view_dash_header', $data);
 			if($this->supplierModel->deleteSupplier($this->session->userdata('userId'))){
 				echo "<div class='mioMargin'><p class='mioSuccess'>Supplier deleted from database</p></div>";
@@ -458,6 +478,10 @@ class Supply_Studio extends CI_Controller {
 			$data['products'] = "";
 			$data['history'] = "";
 			$data['support'] = "";
+
+			$companyName = $this->userModel->getFromUsers("companyName", "userId", $this->session->userdata('userId'));
+			$data['companyName'] = $companyName;
+			
 			$this->load->view('view_dash_header', $data);
 			if($this->userModel->updateUserPassword($this->input->post('newPassword'), $this->session->userdata('userId'))){
 				echo "<div class='mioMargin'><p class='mioSuccess'>Password update successful</p></div>";
