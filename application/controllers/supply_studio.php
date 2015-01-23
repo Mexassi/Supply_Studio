@@ -34,11 +34,15 @@ class Supply_Studio extends CI_Controller {
 	*  printing login page
 	*/
 	public function loginPage(){
-
-		$data['title'] = "Supply Studio";
-		$this->load->view('view_header', $data);
-		$this->load->view('view_login');
-		$this->load->view('view_footer');
+		if ($this->session->userdata('isLoggedIn')) {
+			redirect('members');
+		}
+		else {
+			$data['title'] = "Supply Studio";
+			$this->load->view('view_header', $data);
+			$this->load->view('view_login');
+			$this->load->view('view_footer');
+		}
 	}
 
 	/**
@@ -68,7 +72,7 @@ class Supply_Studio extends CI_Controller {
 	*  is logged in otherwise redirects to login page
 	*/
 	public function members(){
-		// if($this->session->userdata('isLoggedIn')){
+		if($this->session->userdata('isLoggedIn')){
 			$data['title'] = "Members home";
 			$this->load->view('view_header', $data);
 			$this->load->model('userModel');
@@ -82,13 +86,13 @@ class Supply_Studio extends CI_Controller {
 			$data['history'] = "";
 			$data['support'] = "";
 			$data['companyName'] = $companyName;
-			$this->load->view('view_navbar', $data);
+			$this->load->view('view_dash_header', $data);
 			$this->load->view('view_memberHome', $data);
 			$this->load->view('view_footer');
-		// }
-		// else{
-		// 	redirect('restricted');
-		// }
+		}
+		else{
+			redirect('restricted');
+		}
 	}
 
 	public function products($sortBy = 'productName', $sortOrder = 'asc', $offset = 0){
