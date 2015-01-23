@@ -4616,14 +4616,14 @@ button.close {
 
 .btn-default {
   background: transparent; }
-  .btn-default:hover {
+  .btn-default:hover, .btn-default:active, .btn-default:focus {
     background: #8a8a8a;
     border-color: #8a8a8a;
     color: white; }
 
 .btn-primary {
   color: #795548; }
-  .btn-primary:hover {
+  .btn-primary:hover, .btn-primary:active, .btn-primary:focus {
     background: #795548;
     border-color: #795548;
     color: white; }

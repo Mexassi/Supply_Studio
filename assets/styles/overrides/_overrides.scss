@@ -14,7 +14,9 @@
 .btn-default {
   background: transparent;
 
-  &:hover {
+  &:hover,
+  &:active,
+  &:focus {
     background: $btn-default-bg;
     border-color: $btn-default-bg;
     color: white;
@@ -24,7 +26,9 @@
 .btn-primary {
   color: $brand-primary;
 
-  &:hover {
+  &:hover,
+  &:active,
+  &:focus {
     background: $brand-primary;
     border-color: $brand-primary;
     color: white;

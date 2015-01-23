@@ -102,7 +102,7 @@ class Supply_Studio extends CI_Controller {
 
 			$data['productFields'] = array(
 				"productName" => "Product"
-				);
+			);
 
 			$data['title'] = "Products";
 			$this->load->view('view_header', $data);
@@ -135,6 +135,7 @@ class Supply_Studio extends CI_Controller {
 			}
 			$data['productList'] = $result['rows'];
 			$data['prodNo'] = $result['num_rows'];
+
 			$config = array();
 			$config['first_url'] = base_url().'products';
 			$config['first_link'] = 'First';
@@ -142,14 +143,19 @@ class Supply_Studio extends CI_Controller {
 			$config['total_rows'] = $data['prodNo'];
 			$config['per_page'] = $limit;
 			$config['uri_segment'] = 4;
+
 			$this->pagination->initialize($config);
+
 			$data['pagination'] = $this->pagination->create_links();
 			$data['sortOrder'] = $sortOrder;
 			$data['sortBy'] = $sortBy;
+
 			$companyName = $this->userModel->getFromUsers("companyName", "userId", $this->session->userdata('userId'));
 			$data['companyName'] = $companyName;
+
 			$this->load->view('view_dash_header', $data);
 			$this->load->view('view_product', $data);
+			$this->load->view('modals/add-product', $data);
 			$this->load->view('view_footer');
 
 		}
