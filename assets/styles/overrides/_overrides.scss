@@ -1,0 +1,32 @@
+.btn {
+  border-width: 2px;
+  transition: $default-transition;
+}
+
+.input-group-btn .btn {
+  border-width: 1px;
+}
+
+.btn-xs {
+  border-width: 1px;
+}
+
+.btn-default {
+  background: transparent;
+
+  &:hover {
+    background: $btn-default-bg;
+    border-color: $btn-default-bg;
+    color: white;
+  }
+}
+
+.btn-primary {
+  color: $brand-primary;
+
+  &:hover {
+    background: $brand-primary;
+    border-color: $brand-primary;
+    color: white;
+  }
+}

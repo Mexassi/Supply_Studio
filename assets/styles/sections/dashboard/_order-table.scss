@@ -1,0 +1,23 @@
+.order-table-row {
+
+}
+
+.order-table-row--delivery {
+}
+
+.order-table-row--arrival {
+  color: #ccc;
+}
+
+.order-table-row--arrival-late {
+  @extend .warning;
+  color: #ccc;
+}
+
+.order-table-row--late {
+  @extend .warning;
+
+  .order-table-status {
+    color: $brand-danger;
+  }
+}

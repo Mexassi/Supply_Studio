@@ -1,0 +1,19 @@
+$color-brown: #795548;
+$color-orange: #ff5722;
+
+$brand-primary: $color-brown;
+
+$font-family-serif: 'Noto Serif', Georgia, "Times New Roman", Times, serif;
+$font-family-sans-serif: 'Source Sans Pro', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+
+$font-size-base: 16px;
+$headings-font-family: $font-family-serif;
+
+$btn-primary-bg: rgba($brand-primary, 0);
+$btn-primary-border: $brand-primary;
+$btn-default-bg: lighten(black, 54%);
+$btn-default-border: $btn-default-bg;
+
+$default-transition: all .2s cubic-bezier(.4,0,.2,1);
+
+$dashboard-height: 75px;

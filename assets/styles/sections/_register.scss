@@ -1,0 +1,138 @@
+.register {
+  position: relative;
+  padding: 5rem 0;
+
+  &:before {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background: url('../images/register-background.png');
+    z-index: -1;
+  }
+}
+
+.register-logo {
+  display: block;
+  max-width: 150px;
+  margin: 0 auto;
+}
+
+.register-wrapper {
+  position: relative;
+  padding: 0 3rem 3rem;
+  &:before {
+    content: "";
+    display: block;
+    position: absolute;
+    top: -75px;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: -1;
+    background: #f8f8f8;
+    border-radius: 3px;
+  }
+}
+
+.register-wrapper h1 {
+  margin: 0 0 1em;
+  padding-top: .5em;
+}
+
+.register-plan {
+  position: relative;
+  margin: 2em 0;
+  padding: 0 10px; // Moving the original padding to the wrapper
+  font-weight: normal;
+}
+
+.register-plan-wrapper {
+  position: relative;
+  padding: 15px;
+  border-radius: 2px;
+  transition: $default-transition;
+
+  &:before {
+    content: "Selected";
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    width: 75%;
+    margin: 0 auto;
+    padding: 5px;
+    background: $brand-primary;
+    color: white;
+    opacity: 0;
+    transition: $default-transition;
+  }
+}
+
+.register-plan-name {
+  font-family: $font-family-sans-serif;
+  font-size: 3.2rem;
+  letter-spacing: 1px;
+}
+
+.register-plan-price {
+  position: relative;
+  padding-bottom: 1em;
+
+  &:before,
+  &:after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    width: 44%;
+    border-bottom: thin solid #aaa;
+    transition: $default-transition;
+  }
+
+  &:before {
+    left: 3%;
+  }
+
+  &:after {
+    right: 3%;
+  }
+}
+
+.register-plan-radio {
+  opacity: 0;
+
+  &:hover {
+    + .register-plan-wrapper {
+      background: rgba(black, .2);
+    }
+  }
+
+  &:checked {
+    + .register-plan-wrapper {
+      background: $brand-primary;
+      color: white;
+
+      &:before {
+        opacity: 1;
+        transform: translateY(-100%);
+      }
+
+      .register-plan-price:before,
+      .register-plan-price:after {
+        border-bottom-color: white;
+      }
+    }
+  }
+}
+
+.register-plan-info {
+  list-style-type: none;
+  margin-top: 1em;
+  padding-left: 0;
+}
+
+.register-plan-info li {
+  margin: .3em 0;
+}

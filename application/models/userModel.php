@@ -19,7 +19,7 @@
 		}
 
 		/**
-		*  returns the first object of the first row 
+		*  returns the first object of the first row
 		*  from the query executed
 		*/
 		public function getFromUsers($data, $attribute, $argument){

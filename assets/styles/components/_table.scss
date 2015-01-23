@@ -1,0 +1,21 @@
+th a {
+  color: $brand-primary;
+
+  &:hover {
+    color: $brand-primary;
+  }
+}
+
+.dynatable-search {
+
+  input {
+    @extend .form-control;
+    display: inline-block;
+  }
+}
+
+.dynatable-per-page-select {
+  @extend .form-control;
+  display: inline-block;
+  width: auto;
+}

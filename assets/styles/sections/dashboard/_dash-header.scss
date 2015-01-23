@@ -1,0 +1,79 @@
+.dash-header {
+  max-width: 1200px;
+  height: $dashboard-height;
+  margin: 20px auto;
+}
+
+.dash-logo-link {
+  display: block;
+  float: left;
+  position: relative;
+
+  &:before {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background: rgba(black, .3);
+    opacity: 0;
+    transition: $default-transition;
+  }
+
+  &:hover {
+    &:before {
+      opacity: 1;
+    }
+
+    svg {
+      opacity: 1;
+    }
+  }
+}
+
+.dash-logo-link svg {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  margin: auto;
+  z-index: 1;
+  fill: white;
+  opacity: 0;
+  transition: $default-transition;
+}
+
+.dash-logo {
+  width: $dashboard-height;
+  height: auto;
+}
+
+.dash-header-nav {
+  display: table;
+  float: left;
+  height: $dashboard-height;
+  padding-left: 0;
+  list-style-type: none;
+}
+.dash-header-nav--right {
+  float: right;
+}
+
+.dash-header-nav li {
+  display: table-cell;
+  padding: 0 .5em;
+  vertical-align: middle;
+}
+
+.dash-header-nav .dash-header-nav-business-name {
+  // Two level of specificity to override the .dash-header-nav li
+  padding: 0 1em;
+  font-size: 1.2em;
+}
+
+.dash-header-nav-icon {
+  width: 20px;
+  height: 20px;
+}

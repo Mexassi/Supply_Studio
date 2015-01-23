@@ -35,7 +35,7 @@ class Supply_Studio extends CI_Controller {
 	*/
 	public function loginPage(){
 
-		$data['title'] = "MioSystem";
+		$data['title'] = "Supply Studio";
 		$this->load->view('view_header', $data);
 		$this->load->view('view_login');
 		$this->load->view('view_footer');
@@ -68,7 +68,7 @@ class Supply_Studio extends CI_Controller {
 	*  is logged in otherwise redirects to login page
 	*/
 	public function members(){
-		if($this->session->userdata('isLoggedIn')){
+		// if($this->session->userdata('isLoggedIn')){
 			$data['title'] = "Members home";
 			$this->load->view('view_header', $data);
 			$this->load->model('userModel');
@@ -85,10 +85,10 @@ class Supply_Studio extends CI_Controller {
 			$this->load->view('view_navbar', $data);
 			$this->load->view('view_memberHome', $data);
 			$this->load->view('view_footer');
-		}
-		else{
-			redirect('restricted');
-		}
+		// }
+		// else{
+		// 	redirect('restricted');
+		// }
 	}
 
 	public function products($sortBy = 'productName', $sortOrder = 'asc', $offset = 0){
@@ -522,6 +522,7 @@ class Supply_Studio extends CI_Controller {
 			$userId = $this->userModel->getFromUsers("userId", "companyEmail", $this->input->post('email'));
 			$data = array('userId' => $userId, 'isLoggedIn' => 1);
 			$this->session->set_userdata($data);
+
 			redirect('members');
 		}
 		else{
