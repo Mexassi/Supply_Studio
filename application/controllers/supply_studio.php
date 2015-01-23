@@ -180,7 +180,7 @@ class Supply_Studio extends CI_Controller {
 			$data['history'] = "";
 			$data['support'] = "";
 			$this->load->view('view_header', $data);
-			$this->load->view('view_navbar', $data);
+			$this->load->view('view_dash_header', $data);
 			$this->load->view('view_changePassword');
 			$this->load->view('view_footer');
 		}
@@ -261,7 +261,7 @@ class Supply_Studio extends CI_Controller {
 			$data['history'] = "";
 			$data['support'] = "";
 			$data['productName'] = $this->input->post('productName');
-			$this->load->view('view_navbar', $data);
+			$this->load->view('view_dash_header', $data);
 			$this->load->view('view_editProduct', $data);
 			$this->load->view('view_footer');
 
@@ -284,7 +284,11 @@ class Supply_Studio extends CI_Controller {
 			$data['history'] = "";
 			$data['support'] = "";
 			$data['supplierName'] = $this->input->post('supplierName');
-			$this->load->view('view_navbar', $data);
+
+			$companyName = $this->userModel->getFromUsers("companyName", "userId", $this->session->userdata('userId'));
+			$data['companyName'] = $companyName;
+			
+			$this->load->view('view_dash_header', $data);
 			$this->load->view('view_editSupplier', $data);
 			$this->load->view('view_footer');
 		}
@@ -310,7 +314,7 @@ class Supply_Studio extends CI_Controller {
 			$data['history'] = "";
 			$data['support'] = "";
 			$data['supplierName'] = $this->input->post('supplierName');
-			$this->load->view('view_navbar', $data);
+			$this->load->view('view_dash_header', $data);
 			$this->load->view('view_deleteSupplier', $data);
 			$this->load->view('view_footer');
 		}
@@ -338,7 +342,7 @@ class Supply_Studio extends CI_Controller {
 			$data['products'] = "";
 			$data['history'] = "";
 			$data['support'] = "";
-			$this->load->view('view_navbar', $data);
+			$this->load->view('view_dash_header', $data);
 			$this->load->model('productModel');
 			if($this->productModel->updateProduct($this->session->userdata('userId'))){
 				echo "<div class='mioMargin'><p class='mioSuccess'>Product update successful</p></div>";
@@ -374,7 +378,7 @@ class Supply_Studio extends CI_Controller {
 			$data['products'] = "";
 			$data['history'] = "";
 			$data['support'] = "";
-			$this->load->view('view_navbar', $data);
+			$this->load->view('view_dash_header', $data);
 			if($this->supplierModel->updateSupplier($this->session->userdata('userId'))){
 				echo "<div class='mioMargin'><p class='mioSuccess'>Supplier update successful</p></div>";
 				echo "<br><p class='mioInfo'>Click <a href='supplier'>here</a> to go back</p>";
@@ -412,7 +416,7 @@ class Supply_Studio extends CI_Controller {
 			$data['products'] = "";
 			$data['history'] = "";
 			$data['support'] = "";
-			$this->load->view('view_navbar', $data);
+			$this->load->view('view_dash_header', $data);
 			if($this->supplierModel->deleteSupplier($this->session->userdata('userId'))){
 				echo "<div class='mioMargin'><p class='mioSuccess'>Supplier deleted from database</p></div>";
 				echo "<br><p class='mioInfo'>Click <a href='supplier'>here</a> to go back</p>";
@@ -454,7 +458,7 @@ class Supply_Studio extends CI_Controller {
 			$data['products'] = "";
 			$data['history'] = "";
 			$data['support'] = "";
-			$this->load->view('view_navbar', $data);
+			$this->load->view('view_dash_header', $data);
 			if($this->userModel->updateUserPassword($this->input->post('newPassword'), $this->session->userdata('userId'))){
 				echo "<div class='mioMargin'><p class='mioSuccess'>Password update successful</p></div>";
 				echo "<br><p class='mioInfo'>Click <a href='members'>here</a> to go back</p>";

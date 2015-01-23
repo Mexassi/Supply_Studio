@@ -1,38 +1,45 @@
 <div class="mioMargin container">
-	<p class="position">You are currently editing</p>
-	<h3 class="position"><?php echo stripslashes($supplierName)." "; ?></h3>
-	<p class="position">from your supplier list</p>
+	<div class="margin-sm-v">
+		<div class="text-center">Currently editing:</div>
+		<h1 class="text-center h2"><?= stripslashes($supplierName) ?></h3>
+	</div>
+
 	<?php
-		$form = array('class' => 'form-login', 'role' => 'form');
-		echo form_open('editSuppValidation', $form);
-		
-		$supplierName = array('name' => 'supplierName', 'type' => 'hidden', 'value' => $supplierName);
-		echo form_input($supplierName);
-
-		$supplierEmail = array('class' => 'form-control', 'name' => 'supplierEmail', 'type' => 'text', 'placeholder' => 'Supplier  email');
-		echo form_input($supplierEmail, $this->input->post('supplierEmail'));
-		echo form_error('supplierEmail', '<p class="mioError">', '</p>');
-
-		$supplierPhoneNo = array('class' => 'form-control', 'name' => 'supplierPhoneNo', 'type' => 'number', 'placeholder' => 'Supplier Phone no');
-		echo form_input($supplierPhoneNo, $this->input->post('supplierPhoneNo'));
-		echo form_error('supplierPhoneNo', '<p class="mioError">', '</p>');
-
-		$password = array('class' => 'form-control', 'name' => 'password', 'placeholder' => 'Password', 'required' => 'true');
-		echo form_password($password, $this->input->post('password'));
-		echo form_error('password', '<p class="mioError">', '</p>');
-
-		$submit = array('class' => 'btn btn-lg btn-success btn-block', 'value' => 'Update');
-		echo form_submit($submit);
-		echo form_close();
-
+		$supplierName = array('class' => 'form-control', 'name' => 'supplierName', 'type' => 'hidden', 'value' => $this->input->post('supplierName'));
+		$supplierEmail = array('class' => 'form-control', 'name' => 'supplierEmail', 'type' => 'text', 'placeholder' => 'Contact Email');
+		$supplierPhoneNo = array('class' => 'form-control', 'name' => 'supplierPhoneNo', 'type' => 'number', 'placeholder' => 'Phone Number');
+		$password = array('class' => 'form-control', 'name' => 'password', 'placeholder' => 'Your Account Password', 'required' => 'true');
+		$submit = array('class' => 'btn btn-lg btn-primary btn-block', 'value' => 'Update');
 		$formDelete = array('class' => 'form-login', 'role' => 'form');
-		echo form_open('deleteSupplier', $form);
-
-		//$supplierName = array('name' => 'supplierName', 'type' => 'hidden', 'value' => $supplierName);
-		echo form_input($supplierName);
-
 		$submitDelete = array('class' => 'btn btn-lg btn-danger btn-block', 'value' => 'Delete');
-		echo form_submit($submitDelete);
-		echo form_close();
 	?>
+
+	<?= form_open('editSuppValidation', array('class' => 'form-login', 'role' => 'form')) ?>
+
+	<?= form_input($supplierName) ?>
+	<div class="form-group">
+		<?= form_input($supplierEmail, $this->input->post('supplierEmail')) ?>
+		<?= form_error('supplierEmail', '<p class="mioError">', '</p>') ?>
+	</div>
+	<div class="form-group">
+		<?= form_input($supplierPhoneNo, $this->input->post('supplierPhoneNo')) ?>
+		<?= form_error('supplierPhoneNo', '<p class="mioError">', '</p>') ?>
+	</div>
+	<div class="form-group">
+		<?= form_password($password, $this->input->post('password')) ?>
+		<?= form_error('password', '<p class="mioError">', '</p>') ?>
+	</div>
+	<?= form_submit($submit) ?>
+	<?= form_close() ?>
+
+	<?php
+		echo form_open('deleteSupplier', array('class' => 'form-login form', 'role' => 'form'));
+		$submitDelete = array('class' => 'btn btn-sm btn-danger btn-block', 'value' => 'Delete');
+	?>
+
+	<?= form_input($supplierName) ?>
+	<div class="form-group margin-sm-v">
+		<?= form_submit($submitDelete) ?>
+	</div>
+	<?= form_close() ?>
 </div>
