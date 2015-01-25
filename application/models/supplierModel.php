@@ -24,10 +24,11 @@
 				return false;
 			}
 		}
-		public function getSuppliersByName($userId){
-			$query = $this->db->select('supplier_name')
+
+		public function getSuppliersByName($businessId){
+			$query = $this->db->select('supplier_id, supplier_name')
 			->from('supplier')
-			->where('userId', $userId)
+			->where('business_id', $businessId)
 			->order_by('supplier_name', 'asc');
 
 			$table['rows'] = $query->get()->result_array();

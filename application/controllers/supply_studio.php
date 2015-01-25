@@ -97,19 +97,46 @@ class Supply_Studio extends CI_Controller {
 		}
 	}
 
-	public function products($sortBy = 'productName', $sortOrder = 'asc', $offset = 0){
+	public function products($sortBy = 'productName', $sortOrder = 'asc'){
 		if($this->session->userdata('isLoggedIn')){
-			$result = null;
-			$limit = 20;
+			//$this->load->library('pagination');
 
-			$data['productFields'] = array(
-				"productName" => "Product"
-			);
-
-			$data['title'] = "Products";
-			$this->load->view('view_header', $data);
 			$this->load->model('userModel');
+			$this->load->model('businessModel');
+			$this->load->model('productModel');
+			$this->load->model('supplierModel');
+
+			$result = null;
+			$companyName = $this->businessModel->getFromBusiness("business_name", "business_id", $this->session->userdata('current_business'));
+
 			$email = $this->session->userdata('account_email');
+			$supplier = $this->supplierModel->getSuppliersByName($this->session->userdata('current_business'));
+
+			$result = array();
+			foreach ($supplier['rows'] as $s) {
+				$temp = $this->productModel->getProducts($s['supplier_id'], $sortBy, $sortOrder);
+				$result = array_merge($result, $temp["rows"]);
+			}
+
+			//if the posted variable does not exists
+			// if(($this->input->post('supplierName') == "Select") || ($this->input->post('supplierName') !== true)){
+			// 	//get all product from db
+			// 	$data['test'] = "select selected";
+			// 	$result = $this->productModel->getProducts($this->session->userdata('userId'), $sortBy, $sortOrder);
+			// }
+			// //posted variable exists
+			// else{
+			// 	$data['test'] = "select not selected";
+			// 	//get all products by supplier id which passed as a posted variable
+			// 	$result = $this->productModel->getProductsBySupp($this->session->userdata('userId'), $sortBy, $sortOrder, $this->input->post('supplierName'));
+			// }
+			$data['productList'] = $result;
+			$data['prodNo'] = count($result);
+			$data['sortOrder'] = $sortOrder;
+			$data['sortBy'] = $sortBy;
+			$data['companyName'] = $companyName;
+			$data['productFields'] = array("productName" => "Product");
+			$data['title'] = "Products";
 			$data['email'] = $email;
 			$data['members'] = "";
 			$data['orders'] = "";
@@ -117,49 +144,13 @@ class Supply_Studio extends CI_Controller {
 			$data['products'] = "active";
 			$data['history'] = "";
 			$data['support'] = "";
-
-			$this->load->model('supplierModel');
-			$supplier = $this->supplierModel->getSuppliersByName($this->session->userdata('userId'));
 			$data['supplierList'] = $supplier['rows'];
-			$this->load->library('pagination');
-			$this->load->model('productModel');
-			//if the posted variable does not exists
-			if(($this->input->post('supplierName') == "Select") || ($this->input->post('supplierName') !== true)){
-				//get all product from db
-				$data['test'] = "select selected";
-				$result = $this->productModel->getProducts($this->session->userdata('userId'), $limit, $offset, $sortBy, $sortOrder);
-			}
-			//posted variable exists
-			else{
-				$data['test'] = "select not selected";
-				//get all products by supplier id which passed as a posted variable
-				$result = $this->productModel->getProductsBySupp($this->session->userdata('userId'), $limit, $offset, $sortBy, $sortOrder, $this->input->post('supplierName'));
-			}
-			$data['productList'] = $result['rows'];
-			$data['prodNo'] = $result['num_rows'];
 
-			$config = array();
-			$config['first_url'] = base_url().'products';
-			$config['first_link'] = 'First';
-			$config['base_url'] = site_url("products/$sortBy/$sortOrder");
-			$config['total_rows'] = $data['prodNo'];
-			$config['per_page'] = $limit;
-			$config['uri_segment'] = 4;
-
-			$this->pagination->initialize($config);
-
-			$data['pagination'] = $this->pagination->create_links();
-			$data['sortOrder'] = $sortOrder;
-			$data['sortBy'] = $sortBy;
-
-			$companyName = $this->businessModel->getFromBusiness("business_name", "business_id", $this->session->userdata('current_business'));
-			$data['companyName'] = $companyName;
-
+			$this->load->view('view_header', $data);
 			$this->load->view('view_dash_header', $data);
 			$this->load->view('view_product', $data);
 			$this->load->view('modals/add-product', $data);
 			$this->load->view('view_footer');
-
 		}
 		else{
 			redirect('restricted');
@@ -658,25 +649,26 @@ class Supply_Studio extends CI_Controller {
 	}
 
 	public function productValidation(){
-
 		$this->load->library('form_validation');
-		$this->form_validation->set_rules('productName', 'Product name', 'trim|required|is_unique[products.productName]|min_length[5]|max_length[70]');
-		$this->form_validation->set_rules('productDescription', 'Product description', 'trim|min_length[5]|max_length[255]');
-		$this->form_validation->set_rules('productPrice', 'Product price', 'trim|required');
+
+		$this->form_validation->set_rules('name', 'Product name', 'trim|required|is_unique[product.product_name]|min_length[5]|max_length[70]');
+		$this->form_validation->set_rules('note', 'Product description', 'trim|min_length[0]|max_length[255]');
+		$this->form_validation->set_rules('price', 'Product price', 'trim|required');
 
 		if($this->form_validation->run()){
 			$this->load->model('productModel');
 			$this->load->model('supplierModel');
-			if($this->productModel->addProduct($this->session->userdata('userId'), $this->supplierModel->getSupplierId($this->input->post('supplierName')))){
+
+			if($this->productModel->addProduct($this->input->post('supplier'))) {
 				redirect('products');
 			}
 			else{
 				$this->form_validation->set_message('productValidation', 'Could not add product to database');
-				$this->suppliers();
+				$this->products();
 			}
 		}
 		else{
-			$this->suppliers();
+			$this->products();
 		}
 	}
 

@@ -24,8 +24,8 @@
 			<?php foreach ($productList as $row): ?>
 				<tr>
 					<td><?= $i++ ?></td>
-					<td><?= stripslashes($row['productName']) ?></td>
-					<td><?= '$' . number_format($row['price'], 2) ?></td>
+					<td><?= stripslashes($row['product_name']) ?></td>
+					<td><?= '$' . number_format($row['product_price'], 2) ?></td>
 					<td></td>
 					<td></td>
 					<td></td>
@@ -34,7 +34,7 @@
 						<?php
 							// Edit form access
 							echo form_open('editProduct');
-							$productName = array('name' => 'productName', 'type' => 'hidden', 'value' => $row['productName']);
+							$productName = array('name' => 'productName', 'type' => 'hidden', 'value' => $row['product_name']);
 							echo form_input($productName);
 							$submit = array('class' => 'btn btn-xs btn-default', 'value' => 'Edit');
 							echo form_submit($submit);
