@@ -109,7 +109,7 @@ class Supply_Studio extends CI_Controller {
 			$data['title'] = "Products";
 			$this->load->view('view_header', $data);
 			$this->load->model('userModel');
-			$email = $this->userModel->getFromUsers("companyEmail", "userId", $this->session->userdata('userId'));
+			$email = $this->session->userdata('account_email');
 			$data['email'] = $email;
 			$data['members'] = "";
 			$data['orders'] = "";
@@ -172,7 +172,7 @@ class Supply_Studio extends CI_Controller {
 	public function changePassword(){
 		if($this->session->userdata('isLoggedIn')){
 			$this->load->model('userModel');
-			$email = $this->userModel->getFromUsers("companyEmail", "userId", $this->session->userdata('userId'));
+			$email = $this->session->userdata('account_email');
 			$data['title'] = "Change password";
 			$data['email'] = $email;
 			$data['members'] = "";
@@ -209,7 +209,7 @@ class Supply_Studio extends CI_Controller {
 			$data['title'] = "Supplier";
 			$this->load->view('view_header', $data);
 			$this->load->model('userModel');
-			$email = $this->userModel->getFromUsers("companyEmail", "userId", $this->session->userdata('userId'));
+			$email = $this->session->userdata('account_email');
 			$data['email'] = $email;
 			$data['members'] = "";
 			$data['orders'] = "";
@@ -254,7 +254,7 @@ class Supply_Studio extends CI_Controller {
 			$data['title'] = "Edit Product";
 			$this->load->view('view_header', $data);
 			$this->load->model('userModel');
-			$email = $this->userModel->getFromUsers("companyEmail", "userId", $this->session->userdata('userId'));
+			$email = $this->session->userdata('account_email');
 			$data['email'] = $email;
 			$data['members'] = "";
 			$data['orders'] = "";
@@ -281,7 +281,7 @@ class Supply_Studio extends CI_Controller {
 			$data['title'] = "Edit supplier";
 			$this->load->view('view_header', $data);
 			$this->load->model('userModel');
-			$email = $this->userModel->getFromUsers("companyEmail", "userId", $this->session->userdata('userId'));
+			$email = $this->session->userdata('account_email');
 			$data['email'] = $email;
 			$data['members'] = "";
 			$data['orders'] = "";
@@ -311,7 +311,7 @@ class Supply_Studio extends CI_Controller {
 			$data['title'] = "Delete supplier";
 			$this->load->view('view_header', $data);
 			$this->load->model('userModel');
-			$email = $this->userModel->getFromUsers("companyEmail", "userId", $this->session->userdata('userId'));
+			$email = $this->session->userdata('account_email');
 			$data['email'] = $email;
 			$data['members'] = "";
 			$data['orders'] = "";
@@ -344,7 +344,7 @@ class Supply_Studio extends CI_Controller {
 			$this->load->view('view_header', $data);
 			$this->load->model('supplierModel');
 			$this->load->model('userModel');
-			$email = $this->userModel->getFromUsers("companyEmail", "userId", $this->session->userdata('userId'));
+			$email = $this->session->userdata('account_email');
 			$data['email'] = $email;
 			$data['members'] = "";
 			$data['orders'] = "";
@@ -384,7 +384,7 @@ class Supply_Studio extends CI_Controller {
 			$this->load->view('view_header', $data);
 			$this->load->model('supplierModel');
 			$this->load->model('userModel');
-			$email = $this->userModel->getFromUsers("companyEmail", "userId", $this->session->userdata('userId'));
+			$email = $this->session->userdata('account_email');
 			$data['email'] = $email;
 			$data['members'] = "";
 			$data['orders'] = "";
@@ -426,7 +426,7 @@ class Supply_Studio extends CI_Controller {
 			$this->load->view('view_header', $data);
 			$this->load->model('supplierModel');
 			$this->load->model('userModel');
-			$email = $this->userModel->getFromUsers("companyEmail", "userId", $this->session->userdata('userId'));
+			$email = $this->session->userdata('account_email');
 			$data['email'] = $email;
 			$data['members'] = "";
 			$data['orders'] = "";
@@ -471,7 +471,7 @@ class Supply_Studio extends CI_Controller {
 			$data['title'] = "Password reset";
 			$this->load->view('view_header', $data);
 			$this->load->model('userModel');
-			$email = $this->userModel->getFromUsers("companyEmail", "userId", $this->session->userdata('userId'));
+			$email = $this->session->userdata('account_email');
 			$companyName = $this->businessModel->getFromBusiness("business_name", "business_id", $this->session->userdata('current_business'));
 			$data['email'] = $email;
 			$data['members'] = "";
@@ -762,6 +762,7 @@ class Supply_Studio extends CI_Controller {
 		$data['title'] = "Orders";
 		$this->load->view('view_header', $data);
 		$this->load->model('userModel');
+		$this->load->model('businessModel');
 		$companyName = $this->businessModel->getFromBusiness("business_name", "business_id", $this->session->userdata('current_business'));
 		$data['companyName'] = $companyName;
 
