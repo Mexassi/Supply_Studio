@@ -1,23 +1,22 @@
 <?php
-	
+
 	class SupplierModel extends CI_Model{
 
 		/**
 		*  add a new supplier to the suppliers table
 		*  return true if query success or false if it fails
 		*/
-		public function addSupplier($userId){
+		public function addSupplier($businessId){
 
 			$data = array(
-					'supplierId' => 'DEFAULT',
-					'userId' => $userId,
-					'supplierCompanyName' => addslashes($this->input->post('supplierName')),
-					'supplierEmail' => $this->input->post('supplierEmail'),
-					'supplierPhoneNo' => $this->input->post('supplierPhoneNo'),
-					'supplierPaidAmount' => 'DEFAULT'
+					'supplier_id' => 'DEFAULT',
+					'business_id' => $businessId,
+					'supplier_name' => addslashes($this->input->post('supplierName')),
+					'supplier_email' => $this->input->post('supplierEmail'),
+					'phone_no' => $this->input->post('supplierPhoneNo')
 				);
 
-			$query = $this->db->insert('suppliers', $data);
+			$query = $this->db->insert('supplier', $data);
 			if($query){
 				return true;
 			}
@@ -26,10 +25,10 @@
 			}
 		}
 		public function getSuppliersByName($userId){
-			$query = $this->db->select('supplierCompanyName')
-			->from('suppliers')
+			$query = $this->db->select('supplier_name')
+			->from('supplier')
 			->where('userId', $userId)
-			->order_by('supplierCompanyName', 'asc');
+			->order_by('supplier_name', 'asc');
 
 			$table['rows'] = $query->get()->result_array();
 			return $table;
@@ -38,25 +37,24 @@
 		*  return the list of suppliers of a user (passed as argument)
 		*  as an array. Returns an empty array if empty table, return number of rows selected
 		*/
-		public function getSuppliers($userId, $limit, $offset, $sortBy, $sortOrder){
+		public function getSuppliers($businessId, $sortBy, $sortOrder){
 			//validating sortBy and sortOrder variables using ternary logic to simplify code
 			$sortOrder = ($sortOrder == 'desc') ? "desc" : "asc";
-			$sortColumns = array("supplierCompanyName", "supplierPaidAmount");
-			$sortBy = (in_array($sortBy, $sortColumns)) ? $sortBy : "supplierCompanyName";
+			$sortColumns = array("supplier_name");
+			$sortBy = (in_array($sortBy, $sortColumns)) ? $sortBy : "supplier_name";
 
 			//supplier list query
-			$query = $this->db->select('supplierCompanyName, supplierEmail, supplierPhoneNo, supplierPaidAmount')
-			->from('suppliers')
-			->where('userId', $userId)
-			->limit($limit, $offset)
+			$query = $this->db->select('supplier_name, supplier_email, phone_no')
+			->from('supplier')
+			->where('business_id', $businessId)
 			->order_by($sortBy, $sortOrder);
 
 			$table['rows'] = $query->get()->result_array();
 
 			//supplier count query
 			$query = $this->db->select('COUNT(*) as count', false)
-			->from('suppliers')
-			->where('userId', $userId);
+			->from('supplier')
+			->where('business_id', $businessId);
 
 			$temp = $query->get()->result();
 			$table['num_rows'] = $temp[0]->count;
@@ -71,7 +69,7 @@
 		*/
 		public function deleteSupplier($userId){
 
-			$query = $this->db->query("DELETE FROM suppliers WHERE supplierCompanyName ='".$this->input->post('supplierName')."' AND userId = '".$userId."'");
+			$query = $this->db->query("DELETE FROM supplier WHERE supplier_name ='".$this->input->post('supplierName')."' AND userId = '".$userId."'");
 			if($query){
 				return true;
 			}
@@ -80,54 +78,54 @@
 			}
 		}
 
-		public function updateSupplier($userId){
+		public function updateSupplier($businessId){
 
-			$updateEmail = ($this->input->post('supplierEmail') == "") ? false : true;
-			$updatePhoneNo = ($this->input->post('supplierPhoneNo') == "") ? false : true;
+			$updateEmail = ($this->input->post('supplier_email') == "") ? false : true;
+			$updatePhoneNo = ($this->input->post('phone_no') == "") ? false : true;
 			//assigning empty array value to avoid a null return of the function
 			$query = array();
 
 			if($updateEmail && $updatePhoneNo){
-				$query = $this->db->query("UPDATE suppliers 
-					SET supplierEmail ='".$this->input->post('supplierEmail')."', supplierPhoneNo ='".$this->input->post('supplierPhoneNo')."' 
-					WHERE supplierCompanyName = '".$this->input->post('supplierName')."' AND userId ='".$userId."'");
+				$query = $this->db->query("UPDATE supplier
+					SET supplier_email ='".$this->input->post('supplier_email')."', phone_no ='".$this->input->post('phone_no')."'
+					WHERE supplier_name = '".$this->input->post('supplierName')."' AND business_id ='".$businessId."'");
 			}
 			else if($updateEmail){
-				$query = $this->db->query("UPDATE suppliers 
-					SET supplierEmail ='".$this->input->post('supplierEmail')."' 
-					WHERE supplierCompanyName = '".$this->input->post('supplierName')."' AND userId ='".$userId."'");
+				$query = $this->db->query("UPDATE supplier
+					SET supplier_email ='".$this->input->post('supplier_email')."'
+					WHERE supplier_name = '".$this->input->post('supplierName')."' AND business_id ='".$businessId."'");
 			}
 			else if($updatePhoneNo){
-				$query = $this->db->query("UPDATE suppliers 
-					SET supplierPhoneNo ='".$this->input->post('supplierPhoneNo')."' 
-					WHERE supplierCompanyName = '".$this->input->post('supplierName')."' AND userId ='".$userId."'");
+				$query = $this->db->query("UPDATE supplier
+					SET phone_no ='".$this->input->post('phone_no')."'
+					WHERE supplier_name = '".$this->input->post('supplierName')."' AND business_id ='".$businessId."'");
 			}
 			return $query;
 		}
 
 		public function getSupplierId($supplierName){
 
-			$query = $this->db->query("SELECT supplierId FROM suppliers WHERE supplierCompanyName ='".addslashes($supplierName)."'");
+			$query = $this->db->query("SELECT supplier_id FROM supplier WHERE supplier_name ='".addslashes($supplierName)."'");
 
 			if($query->num_rows>0){
 				foreach ($query->result() as $row) {
-					return $row->supplierId;
+					return $row->supplier_id;
 				}
 			}
 			return null;
 		}
 
-		public function getSupplierName($supplierId){
+		public function getSupplierName($supplier_id){
 
-			$query = $this->db->query("SELECT supplierCompanyName FROM suppliers WHERE supplierId ='".$supplierId."'");
+			$query = $this->db->query("SELECT supplier_name FROM supplier WHERE supplier_id ='".$supplier_id."'");
 
 			if($query->num_rows>0){
 				foreach ($query->result() as $row) {
-					return $row->supplierCompanyName;
+					return $row->supplier_name;
 				}
 			}
 			return null;
 		}
-		
+
 
 	}

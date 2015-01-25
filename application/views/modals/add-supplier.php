@@ -8,7 +8,7 @@
           echo form_open('supplierValidation', $form);
         ?>
           <div class="form-group">
-            <label for="supplierName" class="col-sm-3 control-label">Business Name</label>
+            <label for="supplierName" class="col-sm-3 control-label">Supplier Name</label>
             <div class="col-sm-9">
               <?php
                 $supplierName = array('class' => 'form-control', 'name' => 'supplierName', 'type' => 'text', 'placeholder' => 'Supplier Name', 'required' => 'true');
@@ -31,7 +31,7 @@
             <label for="supplierPhoneNo" class="col-sm-3 control-label">Phone Number</label>
             <div class="col-sm-9">
               <?php
-                $supplierPhoneNo = array('class' => 'form-control', 'name' => 'supplierPhoneNo', 'type' => 'number', 'placeholder' => 'Phone Number', 'required' => 'true');
+                $supplierPhoneNo = array('class' => 'form-control', 'name' => 'supplierPhoneNo', 'type' => 'tel', 'placeholder' => 'Phone Number', 'required' => 'true');
                 echo form_input($supplierPhoneNo, $this->input->post('supplierPhoneNo'));
                 echo form_error('supplierPhoneNo', '<p class="mioError">', '</p>');
               ?>

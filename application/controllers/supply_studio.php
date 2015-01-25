@@ -195,21 +195,24 @@ class Supply_Studio extends CI_Controller {
 	*  printing supplier page if the user
 	*  is logged in otherwise redirects to login page
 	*/
-	public function suppliers($sortBy = 'supplierCompanyName', $sortOrder = 'asc', $offset = 0){
+	public function suppliers($sortBy = 'supplier_name', $sortOrder = 'asc', $offset = 0){
 		if($this->session->userdata('isLoggedIn')){
-
-			$limit = 20;
 
 			//set data field to be printed in supplier page
 			$data['fields'] = array(
 				"supplierCompanyName" => "Supplier",
 				"supplierPaidAmount" => "Paid amount"
-				);
+			);
 
 			$data['title'] = "Supplier";
 			$this->load->view('view_header', $data);
 			$this->load->model('userModel');
+			$this->load->model('businessModel');
+			$this->load->model('supplierModel');
+
 			$email = $this->session->userdata('account_email');
+			$result = $this->supplierModel->getSuppliers($this->session->userdata('current_business'), $sortBy, $sortOrder);
+
 			$data['email'] = $email;
 			$data['members'] = "";
 			$data['orders'] = "";
@@ -217,11 +220,9 @@ class Supply_Studio extends CI_Controller {
 			$data['products'] = "";
 			$data['history'] = "";
 			$data['support'] = "";
-			$this->load->model('supplierModel');
-			$result = $this->supplierModel->getSuppliers($this->session->userdata('userId'), $limit, $offset, $sortBy, $sortOrder);
 			$data['supplierList'] = $result['rows'];
 			$data['suppNo'] = $result['num_rows'];
-			$data['limit'] = $limit;
+
 			//set pagination
 			$this->load->library('pagination');
 			$config = array();
@@ -229,7 +230,6 @@ class Supply_Studio extends CI_Controller {
 			$config['first_link'] = 'First';
 			$config['base_url'] = site_url("supplier/$sortBy/$sortOrder");
 			$config['total_rows'] = $data['suppNo'];
-			$config['per_page'] = $limit;
 			$config['uri_segment'] = 4;
 			$this->pagination->initialize($config);
 			$data['pagination'] = $this->pagination->create_links();
@@ -278,10 +278,13 @@ class Supply_Studio extends CI_Controller {
 	}
 	public function editSupplier(){
 		if($this->session->userdata('isLoggedIn')){
-			$data['title'] = "Edit supplier";
-			$this->load->view('view_header', $data);
 			$this->load->model('userModel');
+			$this->load->model('businessModel');
+
 			$email = $this->session->userdata('account_email');
+			$companyName = $this->businessModel->getFromBusiness("business_name", "business_id", $this->session->userdata('current_business'));
+
+			$data['title'] = "Edit supplier";
 			$data['email'] = $email;
 			$data['members'] = "";
 			$data['orders'] = "";
@@ -290,10 +293,9 @@ class Supply_Studio extends CI_Controller {
 			$data['history'] = "";
 			$data['support'] = "";
 			$data['supplierName'] = $this->input->post('supplierName');
-
-			$companyName = $this->businessModel->getFromBusiness("business_name", "business_id", $this->session->userdata('current_business'));
 			$data['companyName'] = $companyName;
 
+			$this->load->view('view_header', $data);
 			$this->load->view('view_dash_header', $data);
 			$this->load->view('view_editSupplier', $data);
 			$this->load->view('view_footer');
@@ -321,6 +323,7 @@ class Supply_Studio extends CI_Controller {
 			$data['support'] = "";
 			$data['supplierName'] = $this->input->post('supplierName');
 
+			$this->load->model('businessModel');
 			$companyName = $this->businessModel->getFromBusiness("business_name", "business_id", $this->session->userdata('current_business'));
 			$data['companyName'] = $companyName;
 
@@ -375,16 +378,19 @@ class Supply_Studio extends CI_Controller {
 	}
 	public function editSuppValidation(){
 		$this->load->library('form_validation');
-		$this->form_validation->set_rules('supplierEmail', 'Supplier email', 'trim|xss_clean|valid_email|is_unique[suppliers.supplierEmail]|max_length[100]');
+		$this->form_validation->set_rules('supplierEmail', 'Supplier email', 'trim|xss_clean|valid_email|is_unique[supplier.supplier_email]|max_length[100]');
 		$this->form_validation->set_rules('supplierPhoneNo', 'Supplier phone no', 'trim|is_natural');
 		$this->form_validation->set_rules('password', 'Password', 'required|trim|callback_check[$this->input->post("password")]');
 
 		if($this->form_validation->run()){
-			$data['title'] = "Update supplier";
-			$this->load->view('view_header', $data);
 			$this->load->model('supplierModel');
 			$this->load->model('userModel');
+			$this->load->model('businessModel');
+
 			$email = $this->session->userdata('account_email');
+			$companyName = $this->businessModel->getFromBusiness("business_name", "business_id", $this->session->userdata('current_business'));
+
+			$data['title'] = "Update supplier";
 			$data['email'] = $email;
 			$data['members'] = "";
 			$data['orders'] = "";
@@ -392,21 +398,18 @@ class Supply_Studio extends CI_Controller {
 			$data['products'] = "";
 			$data['history'] = "";
 			$data['support'] = "";
-
-			$companyName = $this->businessModel->getFromBusiness("business_name", "business_id", $this->session->userdata('current_business'));
 			$data['companyName'] = $companyName;
 
+			$this->load->view('view_header', $data);
 			$this->load->view('view_dash_header', $data);
-			if($this->supplierModel->updateSupplier($this->session->userdata('userId'))){
-				echo "<div class='mioMargin'><p class='mioSuccess'>Supplier update successful</p></div>";
-				echo "<br><p class='mioInfo'>Click <a href='supplier'>here</a> to go back</p>";
-				$this->load->view('view_footer');
+			if($this->supplierModel->updateSupplier($this->session->userdata('current_business'))){
+				redirect('suppliers');
 			}
 			else{
 				echo "<div class='mioMargin'><p class='mioError'>Could not update changes at this time</p></div>";
 				echo "<br><p class='mioInfo'>Click <a href='members'>here</a> to go back</p>";
-				$this->load->view('view_footer');
 			}
+			$this->load->view('view_footer');
 		}
 		else{
 			$this->editSupplier();
@@ -633,13 +636,13 @@ class Supply_Studio extends CI_Controller {
 	public function supplierValidation(){
 
 		$this->load->library('form_validation');
-		$this->form_validation->set_rules('supplierName', 'Supplier name', 'required|trim|is_unique[suppliers.supplierCompanyName]|min_length[3]|max_length[50]');
-		$this->form_validation->set_rules('supplierEmail', 'Supplier email', 'trim|required|xss_clean|valid_email|is_unique[suppliers.supplierEmail]|max_length[100]');
+		$this->form_validation->set_rules('supplierName', 'Supplier name', 'required|trim|is_unique[supplier.supplier_name]|min_length[3]|max_length[50]');
+		$this->form_validation->set_rules('supplierEmail', 'Supplier email', 'trim|required|xss_clean|valid_email|is_unique[supplier.supplier_email]|max_length[100]');
 		$this->form_validation->set_rules('supplierPhoneNo', 'Supplier phone no', 'trim|required|is_natural');
 
 		if($this->form_validation->run()){
 			$this->load->model('supplierModel');
-			if($this->supplierModel->addSupplier($this->session->userdata('userId'))){
+			if($this->supplierModel->addSupplier($this->session->userdata('current_business'))){
 				echo "success";
 				$this->form_validation->set_message('supplierValidation', 'Supplier added to database');
 				redirect('suppliers');
@@ -679,7 +682,7 @@ class Supply_Studio extends CI_Controller {
 
 	public function check($password){
 		$this->load->model('userModel');
-		if($this->userModel->check($password, $this->session->userdata('userId'))){
+		if($this->userModel->check($password, $this->session->userdata('account_email'))){
 			return true;
 		}
 		else{

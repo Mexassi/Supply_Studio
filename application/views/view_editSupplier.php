@@ -6,8 +6,13 @@
 
 	<?php
 		$supplierName = array('class' => 'form-control', 'name' => 'supplierName', 'type' => 'hidden', 'value' => $this->input->post('supplierName'));
-		$supplierEmail = array('class' => 'form-control', 'name' => 'supplierEmail', 'type' => 'text', 'placeholder' => 'Contact Email');
-		$supplierPhoneNo = array('class' => 'form-control', 'name' => 'supplierPhoneNo', 'type' => 'number', 'placeholder' => 'Phone Number');
+		$supplierEmail = array(
+			'class' => 'form-control',
+			'name' => 'supplier_email',
+			'type' => 'text',
+			'placeholder' => 'Contact Email'
+		);
+		$supplierPhoneNo = array('class' => 'form-control', 'name' => 'phone_no', 'type' => 'number', 'placeholder' => 'Phone Number');
 		$password = array('class' => 'form-control', 'name' => 'password', 'placeholder' => 'Your Account Password', 'required' => 'true');
 		$submit = array('class' => 'btn btn-lg btn-primary btn-block', 'value' => 'Update');
 		$formDelete = array('class' => 'form-login', 'role' => 'form');
@@ -19,11 +24,11 @@
 	<?= form_input($supplierName) ?>
 	<div class="form-group">
 		<?= form_input($supplierEmail, $this->input->post('supplierEmail')) ?>
-		<?= form_error('supplierEmail', '<p class="mioError">', '</p>') ?>
+		<?= form_error('supplier_email', '<p class="mioError">', '</p>') ?>
 	</div>
 	<div class="form-group">
 		<?= form_input($supplierPhoneNo, $this->input->post('supplierPhoneNo')) ?>
-		<?= form_error('supplierPhoneNo', '<p class="mioError">', '</p>') ?>
+		<?= form_error('phone_no', '<p class="mioError">', '</p>') ?>
 	</div>
 	<div class="form-group">
 		<?= form_password($password, $this->input->post('password')) ?>

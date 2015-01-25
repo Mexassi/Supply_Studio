@@ -32,10 +32,11 @@
 		/**
 		*  return true if a match of password and userId are found into db
 		*/
-		public function check($password, $userId){
-			$query = $this->db->query("SELECT passwd FROM account WHERE passwd = sha1('".$password."') AND userId = ".$userId);
+		public function check($password, $email){
+			$query = $this->db->query("SELECT account_password FROM account WHERE account_email = '".$email."'");
 			if($query->num_rows > 0){
-				return true;
+				$result = $query->result();
+				return password_verify($password, $result[0]->account_password);
 			}
 			else{
 				return false;

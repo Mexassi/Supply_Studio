@@ -18,15 +18,15 @@
 				<?php foreach ($supplierList as $supplier): ?>
 					<tr>
 						<td><?= $i++ ?></td>
-						<td><?= stripslashes($supplier['supplierCompanyName']) ?></td>
-						<td><?= $supplier['supplierEmail'] ?></td>
-						<td><?= $supplier['supplierPhoneNo'] ?></td>
-						<td><?= $supplier['supplierPaidAmount'] ?></td>
+						<td><?= stripslashes($supplier['supplier_name']) ?></td>
+						<td><?= $supplier['supplier_email'] ?></td>
+						<td><?= $supplier['phone_no'] ?></td>
 						<td></td>
+						<td><?= /*$supplier['supplierPaidAmount']*/ "" ?></td>
 						<td>
 							<?php
 								echo form_open('editSupplier');
-								$supplierName = array('name' => 'supplierName', 'type' => 'hidden', 'value' => $supplier['supplierCompanyName']);
+								$supplierName = array('name' => 'supplierName', 'type' => 'hidden', 'value' => $supplier['supplier_name']);
 								echo form_input($supplierName);
 								$submit = array('class' => 'btn btn-xs btn-default', 'value' => 'Edit');
 								echo form_submit($submit);
