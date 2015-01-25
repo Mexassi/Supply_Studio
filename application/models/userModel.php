@@ -5,17 +5,14 @@
 		*/
 		public function canLogin(){
 
-			$this->db->where('companyEmail', $this->input->post('companyEmail'));
-			$this->db->where('passwd',sha1($this->input->post('password')));
-
-			$query = $this->db->get('users');
+			$this->db->where('account_email', $this->input->post('email'));
+			$query = $this->db->get('account');
 
 			if($query->num_rows()>0){
-				return true;
+				$result = $query->result();
+				return password_verify($this->input->post('password'), $result[0]->account_password);
 			}
-			else{
-				return false;
-			}
+			return false;
 		}
 
 		/**
@@ -23,7 +20,7 @@
 		*  from the query executed
 		*/
 		public function getFromUsers($data, $attribute, $argument){
-			$query = $this->db->query("SELECT ".$data." FROM users WHERE ".$attribute." = '".$argument."'");
+			$query = $this->db->query("SELECT ".$data." FROM account WHERE ".$attribute." = '".$argument."'");
 			if($query->num_rows > 0){
 				foreach ($query->result() as $row){
 					return $row->$data;
@@ -36,7 +33,7 @@
 		*  return true if a match of password and userId are found into db
 		*/
 		public function check($password, $userId){
-			$query = $this->db->query("SELECT passwd FROM users WHERE passwd = sha1('".$password."') AND userId = ".$userId);
+			$query = $this->db->query("SELECT passwd FROM account WHERE passwd = sha1('".$password."') AND userId = ".$userId);
 			if($query->num_rows > 0){
 				return true;
 			}
@@ -51,7 +48,7 @@
 		*/
 		public function addTempUser($key){
 			$data = array(
-					'companyEmail' => $this->input->post('companyEmail'),
+					'account_email' => $this->input->post('email'),
 					'phoneNo' => $this->input->post('phoneNo'),
 					'companyName' => addslashes($this->input->post('companyName')),
 					'companyStreetName' => $this->input->post('companyStreetName'),
@@ -59,17 +56,41 @@
 					'companySuburb' => $this->input->post('companySuburb'),
 					'companyPostCode' => $this->input->post('companyPostCode'),
 					'companyState' => $this->input->post('state'),
-					'passwd' => sha1($this->input->post('password')),
+					'password' => sha1($this->input->post('password')),
 					'userKey' => $key
 				);
 
-			$query = $this->db->insert('tempUsers', $data);
+			$query = $this->db->insert('account', $data);
 			if($query){
 				return true;
 			}
 			else{
 				return false;
 			}
+		}
+
+		/**
+		*/
+
+		public function register_user($password_hash,$email,$username){
+			$data = array(
+				"account_email" => self::protect($email),
+				"account_password" => self::protect($password_hash),
+				"username" => self::protect($username),
+				"active" => true
+			);
+
+			$query = $this->db->insert('account',$data);
+			if($query){
+				return true;
+			}
+			else{
+				return false;
+			}
+		}
+
+		private function protect($string){
+			return mysql_real_escape_string($string);
 		}
 
 		/**
@@ -111,7 +132,7 @@
 					'passwd' => $row->passwd
 					);
 
-				$registrationComplete = $this->db->insert('users', $data);
+				$registrationComplete = $this->db->insert('account', $data);
 			}
 			if($registrationComplete){
 				$this->db->where('userKey', $key);
@@ -136,7 +157,7 @@
 		*  updates user password passing value and userId as arguments
 		*/
 		public function updateUserPassword($value, $userId){
-			$query = $this->db->query("UPDATE users SET passwd = sha1('".$value."') WHERE userId ='".$userId."'");
+			$query = $this->db->query("UPDATE account SET passwd = sha1('".$value."') WHERE userId ='".$userId."'");
 			if($query){
 				return true;
 			}

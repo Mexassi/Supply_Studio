@@ -75,9 +75,12 @@ class Supply_Studio extends CI_Controller {
 		if($this->session->userdata('isLoggedIn')){
 			$data['title'] = "Members home";
 			$this->load->view('view_header', $data);
+
 			$this->load->model('userModel');
-			$email = $this->userModel->getFromUsers("companyEmail", "userId", $this->session->userdata('userId'));
-			$companyName = $this->userModel->getFromUsers("companyName", "userId", $this->session->userdata('userId'));
+			$this->load->model('businessModel');
+			$email = $this->session->userdata('account_email');
+			$businessId = $this->businessModel->getBusinessLink($email);
+			$companyName = $this->businessModel->getFromBusiness("business_name", "business_id", $businessId);
 			$data['email'] = $email;
 			$data['members'] = "active";
 			$data['orders'] = "";
@@ -564,8 +567,8 @@ class Supply_Studio extends CI_Controller {
 
 		if ($this->form_validation->run()){
 			$this->load->model('userModel');
-			$userId = $this->userModel->getFromUsers("userId", "companyEmail", $this->input->post('email'));
-			$data = array('userId' => $userId, 'isLoggedIn' => 1);
+			$account_email = $this->userModel->getFromUsers("account_email", "account_email", $this->input->post('email'));
+			$data = array('account_email' => $account_email, 'isLoggedIn' => 1);
 			$this->session->set_userdata($data);
 
 			redirect('members');
@@ -575,57 +578,50 @@ class Supply_Studio extends CI_Controller {
 		}
 	}
 
-
 	public function registerValidation(){
 
 		$this->load->library('form_validation');
-		$this->load->model('userModel');
-		$this->form_validation->set_rules('companyEmail', 'Email', 'trim|required|valid_email|is_unique[users.companyEmail]|max_length[100]');
-		$this->form_validation->set_rules('phoneNo', 'Mobile no', 'trim|required|is_natural');
-		$this->form_validation->set_rules('companyName', 'Company name', 'trim|required|min_length[3]|max_length[50]');
-		$this->form_validation->set_rules('companyStreetName', 'Company street name', 'trim|required|min_length[3]|max_length[50]');
-		$this->form_validation->set_rules('companyStreetNo', 'Company street no', 'trim|required|is_natural');
-		$this->form_validation->set_rules('companySuburb', 'company suburb', 'trim|required|min_length[3]|max_length[30]');
-		$this->form_validation->set_rules('companyPostCode', 'Company post code', 'trim|required|is_natural|exact_length[4]');
-		$this->form_validation->set_rules('state', 'State', 'required');
+
+		$this->form_validation->set_rules('email','Email','trim|required|valid_email|is_unique[account.account_email]|max_length[100]');
 		$this->form_validation->set_rules('password', 'Password', 'trim|required|min_length[6]|max_length[16]|');
-		$this->form_validation->set_rules('repeatPassword', 'Repeat password', 'trim|required|matches[password]');
+		$this->form_validation->set_rules('businessName', 'Company name', 'trim|required|min_length[3]|max_length[50]');
+		$this->form_validation->set_rules('businessPhone', 'Mobile no', 'trim|required|is_natural');
+		$this->form_validation->set_rules('planType', 'Plan Type','required');
 
 		if($this->form_validation->run()){
-			//generate a random key
-			$key = sha1(uniqid());
-			$this->load->library('email', array('mailtype' => 'html'));
-			$this->email->from('registration@miosystem.com', 'MioSystem Team');
-			$this->email->to($this->input->post('companyEmail'));
-			$this->email->subject("Activate your account.");
+			$this->load->model('userModel');
+			$this->load->model('businessModel');
 
-			$message = "<p>Thank you for the registration</p>";
-			$message .= "<p>You are one step closer to use MioSystem.</p>";
-			$message .= "<p>Click <a href='".base_url()."registerUser/$key'>here</a> to complete your registration</p>";
-			$message .= "<p>This is an auto-generated message, do not reply. If you wish to contact us, go to (webpage-link-to-be-entered)</p>";
+			$password_hash = password_hash($this->input->post('password'), PASSWORD_DEFAULT);
 
-			$this->email->message($message);
+			$username = explode("@",$this->input->post('email'));
 
-			$data['title'] = "Temporary registration";
-			$this->load->view('view_header',$data);
-			//add them to the temp_user table
-			if($this->userModel->addTempUser($key)){
-				//send an email to the user
-				if($this->email->send()){
-					echo "<div class='mioMargin'><p class='mioSuccess'>The Email has been sent</p></div>";
-					echo "<br><p class='mioInfo'>Click <a href='mioSystem'>here</a> to go back</p>";
-					$this->load->view('view_footer');
-				}
-				else{
-					echo "<div class='mioMargin'><p class='mioError'>We could not send you the Email</p></div>";
-					echo "<br><p class='mioInfo'>Click <a href='mioSystem'>here</a> to go back</p>";
-					$this->load->view('view_footer');
-				}
+			// $this->load->library('email', array('mailtype' => 'html'));
+			// $this->email->from('registration@miosystem.com', 'MioSystem Team');
+			// $this->email->to($this->input->post('companyEmail'));
+			// $this->email->subject("Activate your account.");
+			// $message = "<p>Thank you for the registration</p>";
+			// $message .= "<p>You are one step closer to use MioSystem.</p>";
+			// $message .= "<p>Click <a href='".base_url()."registerUser/$key'>here</a> to complete your registration</p>";
+			// $message .= "<p>This is an auto-generated message, do not reply. If you wish to contact us, go to (webpage-link-to-be-entered)</p>";
+			// $this->email->message($message);
+			$userRegister = $this->userModel->register_user($password_hash,$this->input->post('email'),$username[0]);
+			$businessRegister = $this->businessModel->register_business(
+				$this->input->post('businessName'),
+				$this->input->post('planType'),
+				$this->input->post('businessPhone')
+			);
+			$linkBusiness = $this->businessModel->link_new_business($businessRegister, $this->input->post('email'));
+
+
+			if($userRegister && $businessRegister != false && $linkBusiness) {
+				$data = array('account_email' => $this->input->post('email'), 'isLoggedIn' => 1);
+				$this->session->set_userdata($data);
+				redirect('members');
 			}
-			else{
+			else {
 				echo "<div class='mioMargin'><p class='mioError'>Database connection problem. Try again later</p></div>";
 				echo "<br><p class='mioInfo'>Click <a href='mioSystem'>here</a> to go back</p>";
-				$this->load->view('view_footer');
 			}
 		}
 		else{
@@ -707,9 +703,7 @@ class Supply_Studio extends CI_Controller {
 	*  if not canLogin
 	*/
 	public function auth(){
-
 		$this->load->model('userModel');
-
 		if($this->userModel->canLogin()){
 			return true;
 		}
