@@ -775,6 +775,18 @@ class Supply_Studio extends CI_Controller {
 		$this->load->view('modals/add-order', $data);
 		$this->load->view('view_footer');
 	}
+
+	public function settings() {
+		$data['title'] = "Orders";
+		$this->load->view('view_header', $data);
+		$this->load->model('userModel');
+		$companyName = $this->userModel->getFromUsers("companyName", "userId", $this->session->userdata('userId'));
+		$data['companyName'] = $companyName;
+
+		$this->load->view('view_dash_header', $data);
+		$this->load->view('view_settings', $data);
+		$this->load->view('view_footer');
+	}
 }
 
 /* End of file mioSystem.php */
