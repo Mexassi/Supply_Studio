@@ -481,7 +481,7 @@ class Supply_Studio extends CI_Controller {
 
 			$companyName = $this->userModel->getFromUsers("companyName", "userId", $this->session->userdata('userId'));
 			$data['companyName'] = $companyName;
-			
+
 			$this->load->view('view_dash_header', $data);
 			if($this->userModel->updateUserPassword($this->input->post('newPassword'), $this->session->userdata('userId'))){
 				echo "<div class='mioMargin'><p class='mioSuccess'>Password update successful</p></div>";
@@ -761,6 +761,19 @@ class Supply_Studio extends CI_Controller {
 			echo "<br><p class='mioInfo'>Click <a href='".base_url()."'>here</a> to go back</p>";
 			$this->load->view('view_footer');
 		}
+	}
+
+	public function orders() {
+		$data['title'] = "Orders";
+		$this->load->view('view_header', $data);
+		$this->load->model('userModel');
+		$companyName = $this->userModel->getFromUsers("companyName", "userId", $this->session->userdata('userId'));
+		$data['companyName'] = $companyName;
+
+		$this->load->view('view_dash_header', $data);
+		$this->load->view('view_order', $data);
+		$this->load->view('modals/add-order', $data);
+		$this->load->view('view_footer');
 	}
 }
 
