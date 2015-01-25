@@ -1,0 +1,21 @@
+.site-footer {
+  margin: 5em 0 1em;
+}
+
+.site-footer h1 {
+  font-size: 1.4em;
+  text-align: right;
+}
+
+.footer-links {
+  list-style-type: none;
+}
+
+.footer-link {
+  display: inline-block;
+  margin-left: 1.4em;
+}
+
+.footer-link a {
+  color: $brand-primary;
+}
