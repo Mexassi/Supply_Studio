@@ -1,6 +1,15 @@
-	<div class="footer">
-		<p class="mioCenter mioFont">&copy 2014</p>
-	</div>
+<div class="container">
+	<footer class="site-footer pull-right">
+		<h1>Supply Studio</h1>
+		<ul class="footer-links">
+			<li class="footer-link"><a href="#">Help</a></li>
+			<li class="footer-link"><a href="#">TOS</a></li>
+			<li class="footer-link"><a href="#">Updates</a></li>
+		</ul>
+	</footer>
+</div>
+
+
 
 	<?php include_once('assets/images/icons.svg'); ?>
 	<script src="<?= base_url('assets/bower_components/jquery/dist/jquery.min.js') ?>" type="text/javascript"></script>
