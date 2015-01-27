@@ -8,36 +8,34 @@
           <div class="col-md-9"><input type="text" class="form-control" value="<?= $companyName ?>" /></div>
         </div>
         <div class="form-group">
-          <label class="col-md-3 control-label">Collaborators</label>
+          <label class="col-md-3 control-label">Colleagues</label>
           <div class="col-md-9">
-            <div class="col-md-4"><svg class="dash-header-nav-icon icon-user"><use xlink:href="#icon-user"></use></svg><span>Henry</span></div>
-            <div class="col-md-4"><svg class="dash-header-nav-icon icon-user"><use xlink:href="#icon-user"></use></svg><span>Lou</span></div>
-            <div class="col-md-4"><svg class="dash-header-nav-icon icon-user"><use xlink:href="#icon-user"></use></svg><span>John</span></div>
-            <div class="col-md-4"><svg class="dash-header-nav-icon icon-user"><use xlink:href="#icon-user"></use></svg><span>Potato</span></div>
-            <div class="col-md-4 text-primary"><svg class="dash-header-nav-icon icon-user"><use xlink:href="#icon-user"></use></svg><span>Lorem</span></div>
-            <div class="col-md-4"><svg class="dash-header-nav-icon icon-user"><use xlink:href="#icon-user"></use></svg><span>Ipsum</span></div>
+            <?php foreach ($coworkers as $coworker): ?>
+              <div class="col-md-4"><svg class="dash-header-nav-icon icon-user"><use xlink:href="#icon-user"></use></svg><span><?= $coworker ?></span></div>
+            <?php endforeach ?>
+            <div class="clearfix"></div>
             <a href="#" class="btn btn-default btn-sm">Add more</a>
           </div>
         </div>
         <div class="form-group">
           <label class="col-md-3 control-label">Primary Holder</label>
           <div class="col-md-9">
-            <i class="mdi-action-account-circle collaborator-icon"></i><span>Lorem</span> — <em>You</em>
+            <i class="mdi-action-account-circle collaborator-icon"></i>
+            <span><?= $admin ?></span>
+            <?php if ($admin == $username): ?>
+            — <em>You</em>
             <a href="#" class="btn btn-default btn-sm">Switch ownership</a>
+            <?php endif ?>
           </div>
         </div>
       </fieldset>
       <fieldset>
         <legend>Personal Info</legend>
         <div class="form-group">
-          <label class="col-md-3 control-label">Name</label>
-          <div class="col-md-9"><input type="text" class="form-control" placeholder="Name" /></div>
-        </div>
-        <div class="form-group">
           <label class="col-md-3 control-label">Email</label>
           <div class="col-md-9">
             <div class="input-group">
-              <input type="text" class="form-control" placeholder="loremipsum@ipsumdolor.com" disabled>
+              <input type="text" class="form-control" value="<?= $email ?>" disabled>
               <div class="input-group-btn">
                 <a href="#" class="btn btn-default">Change</a>
               </div>
@@ -48,7 +46,7 @@
           <label for="" class="col-md-3 control-label">Password</label>
           <div class="col-md-9">
             <div class="input-group">
-              <input type="password" class="form-control" placeholder="**************" disabled>
+              <input type="password" class="form-control" value="*******************" disabled>
               <div class="input-group-btn">
                 <a href="#" class="btn btn-default">Change</a>
               </div>
@@ -60,11 +58,15 @@
     <div class="col-md-4 col-md-offset-1">
       <div class="well">
         <p class="text-center">Current plan: <br />
-          <span class="h2">Free Plan</span>
+          <span class="h2"><?= ucfirst($plan) ?> Plan</span>
         </p>
-
-        <div class="btn btn-primary btn-block">Get Premium!</div>
-        <p class="h6">With premium, you'll get more functionality</p>
+        <?php if ($plan == 'free'): ?>
+          <div class="btn btn-primary btn-block">Get Premium!</div>
+          <p class="h6">With premium, you'll get more functionality.</p>
+        <?php else: ?>
+          <div class="btn btn-primary btn-block">Upgrade!</div>
+          <p class="h6">A better plan gives you more flexibility for a bigger company.</p>
+        <?php endif ?>
       </div>
     </div>
   </div>

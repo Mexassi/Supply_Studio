@@ -830,12 +830,24 @@ class Supply_Studio extends CI_Controller {
 	}
 
 	public function settings() {
-		$data['title'] = "Orders";
-		$this->load->view('view_header', $data);
 		$this->load->model('userModel');
-		$companyName = $this->businessModel->getFromBusiness("business_name", "business_id", $this->session->userdata('current_business'));
-		$data['companyName'] = $companyName;
+		$this->load->model('businessModel');
 
+		$companyName = $this->businessModel->getFromBusiness("business_name", "business_id", $this->session->userdata('current_business'));
+		$username = explode("@",$this->session->userdata('account_email'));
+		$coworkers = $this->businessModel->getCoworkerNames($this->session->userdata('current_business'));
+		$admin = $this->businessModel->getBusinessAdmin($this->session->userdata('current_business'));
+		$plan = $this->businessModel->getBusinessPlan($this->session->userdata('current_business'));
+
+		$data['title'] = "Orders";
+		$data['companyName'] = $companyName;
+		$data['username'] = $username[0];
+		$data['email'] = $this->session->userdata('account_email');
+		$data['coworkers'] = $coworkers;
+		$data['admin'] = $admin;
+		$data['plan'] = $plan;
+
+		$this->load->view('view_header', $data);
 		$this->load->view('view_dash_header', $data);
 		$this->load->view('view_settings', $data);
 		$this->load->view('view_footer');

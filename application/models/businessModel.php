@@ -58,4 +58,39 @@ class BusinessModel extends CI_Model {
     }
     return null;
   }
+
+  public function getCoworkerNames($businessId) {
+    $query = $this->db->query("SELECT username FROM account WHERE account_email = (SELECT account_email FROM account_in_business WHERE business_id = '".$businessId."')");
+
+    $table = array();
+    if ($query->num_rows > 0) {
+      foreach ($query->result() as $row){
+        array_push($table, $row->username);
+      }
+    }
+    return $table;
+  }
+
+  public function getBusinessAdmin($businessId) {
+    $query = $this->db->query("SELECT username FROM account WHERE account_email = (SELECT account_email FROM account_in_business WHERE business_id = '".$businessId."' AND admin = '1')");
+
+    $table = array();
+    if ($query->num_rows > 0) {
+      foreach ($query->result() as $row){
+        return $row->username;
+      }
+    }
+    return $table;
+  }
+
+  public function getBusinessPlan($businessId) {
+    $query = $this->db->query("SELECT subscription_level FROM business WHERE business_id = '".$businessId."'");
+
+    $table = array();
+    if ($query->num_rows > 0) {
+      foreach ($query->result() as $row){
+        return $row->subscription_level;
+      }
+    }
+  }
 }
