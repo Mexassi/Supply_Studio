@@ -58,6 +58,7 @@
 			}
 			$suppliers = implode(',', $temp);
 
+			if (empty($suppliers)) return false;
 			$query = $this->db->query('SELECT * FROM product WHERE supplier_id IN ('.$suppliers.')');
 
 			return $query->result();

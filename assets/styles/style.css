@@ -4669,6 +4669,10 @@ th a {
     margin-left: .3em;
     vertical-align: middle; }
 
+.btn-dropdown {
+  background: none;
+  border: none; }
+
 .register {
   position: relative;
   padding: 5rem 0; }
@@ -4840,14 +4844,29 @@ th a {
 .dash-header-nav--right {
   float: right; }
 
-.dash-header-nav li {
+.dash-header-nav > li {
   display: table-cell;
   padding: 0 .5em;
   vertical-align: middle; }
 
 .dash-header-nav .dash-header-nav-business-name {
   padding: 0 1em;
+  padding-left: 0;
   font-size: 1.2em; }
+  .dash-header-nav .dash-header-nav-business-name .dropdown {
+    -webkit-transition: all .2s cubic-bezier(.4, 0, .2, 1);
+            transition: all .2s cubic-bezier(.4, 0, .2, 1);
+    outline: 0; }
+    .dash-header-nav .dash-header-nav-business-name .dropdown:hover {
+      background: #eee; }
+  .dash-header-nav .dash-header-nav-business-name .dropdown-menu li:hover {
+    background: #eee; }
+  .dash-header-nav .dash-header-nav-business-name .dropdown-menu form {
+    padding: 3px 20px; }
+  .dash-header-nav .dash-header-nav-business-name .dropdown-menu button {
+    background: none;
+    border: none;
+    padding: 0; }
 
 .dash-header-nav-icon {
   width: 20px;

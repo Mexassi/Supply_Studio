@@ -61,7 +61,7 @@
   float: right;
 }
 
-.dash-header-nav li {
+.dash-header-nav > li {
   display: table-cell;
   padding: 0 .5em;
   vertical-align: middle;
@@ -70,7 +70,33 @@
 .dash-header-nav .dash-header-nav-business-name {
   // Two level of specificity to override the .dash-header-nav li
   padding: 0 1em;
+  padding-left: 0;
   font-size: 1.2em;
+
+  .dropdown {
+    transition: $default-transition;
+    outline: 0;
+    &:hover {
+      background: #eee;
+    }
+  }
+
+  .dropdown-menu {
+    li {
+      &:hover {
+        background: #eee;
+      }
+    }
+    form {
+      padding: 3px 20px;
+    }
+
+    button {
+      background: none;
+      border: none;
+      padding: 0;
+    }
+  }
 }
 
 .dash-header-nav-icon {

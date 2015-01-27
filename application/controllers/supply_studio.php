@@ -73,13 +73,15 @@ class Supply_Studio extends CI_Controller {
 	*/
 	public function members(){
 		if($this->session->userdata('isLoggedIn')){
-			$data['title'] = "Members home";
-			$this->load->view('view_header', $data);
-
 			$this->load->model('userModel');
 			$this->load->model('businessModel');
+
 			$email = $this->session->userdata('account_email');
-			$companyName = $this->businessModel->getFromBusiness("business_name", "business_id", $this->session->userdata('current_business'));
+			$currentBusiness = $this->session->userdata('current_business');
+			$companyName = $this->businessModel->getFromBusiness("business_name", "business_id", $currentBusiness);
+			$businesses = $this->businessModel->getBusinesses($email);
+
+			$data['title'] = "Dashboard | Supply Studio";
 			$data['email'] = $email;
 			$data['members'] = "active";
 			$data['orders'] = "";
@@ -88,6 +90,9 @@ class Supply_Studio extends CI_Controller {
 			$data['history'] = "";
 			$data['support'] = "";
 			$data['companyName'] = $companyName;
+			$data['businesses'] = $businesses;
+
+			$this->load->view('view_header', $data);
 			$this->load->view('view_dash_header', $data);
 			$this->load->view('view_memberHome', $data);
 			$this->load->view('view_footer');
@@ -95,6 +100,13 @@ class Supply_Studio extends CI_Controller {
 		else{
 			redirect('restricted');
 		}
+	}
+
+	public function switchBusiness() {
+		$businessId = $this->input->post('id');
+		$this->session->set_userdata(array('current_business' => $businessId));
+
+		redirect('members');
 	}
 
 	public function products($sortBy = 'productName', $sortOrder = 'asc'){
@@ -145,6 +157,9 @@ class Supply_Studio extends CI_Controller {
 			$data['history'] = "";
 			$data['support'] = "";
 			$data['supplierList'] = $supplier['rows'];
+			$businesses = $this->businessModel->getBusinesses($email);
+
+			$data['businesses'] = $businesses;
 
 			$this->load->view('view_header', $data);
 			$this->load->view('view_dash_header', $data);
@@ -172,6 +187,9 @@ class Supply_Studio extends CI_Controller {
 			$data['products'] = "";
 			$data['history'] = "";
 			$data['support'] = "";
+			$businesses = $this->businessModel->getBusinesses($email);
+
+			$data['businesses'] = $businesses;
 			$this->load->view('view_header', $data);
 			$this->load->view('view_dash_header', $data);
 			$this->load->view('view_changePassword');
@@ -229,6 +247,9 @@ class Supply_Studio extends CI_Controller {
 
 			$companyName = $this->businessModel->getFromBusiness("business_name", "business_id", $this->session->userdata('current_business'));
 			$data['companyName'] = $companyName;
+			$businesses = $this->businessModel->getBusinesses($email);
+
+			$data['businesses'] = $businesses;
 
 			$this->load->view('view_dash_header', $data);
 			$this->load->view('view_supplier', $data);
@@ -257,6 +278,9 @@ class Supply_Studio extends CI_Controller {
 
 			$companyName = $this->businessModel->getFromBusiness("business_name", "business_id", $this->session->userdata('current_business'));
 			$data['companyName'] = $companyName;
+			$businesses = $this->businessModel->getBusinesses($email);
+
+			$data['businesses'] = $businesses;
 
 			$this->load->view('view_dash_header', $data);
 			$this->load->view('view_editProduct', $data);
@@ -285,6 +309,9 @@ class Supply_Studio extends CI_Controller {
 			$data['support'] = "";
 			$data['supplierName'] = $this->input->post('supplierName');
 			$data['companyName'] = $companyName;
+			$businesses = $this->businessModel->getBusinesses($email);
+
+			$data['businesses'] = $businesses;
 
 			$this->load->view('view_header', $data);
 			$this->load->view('view_dash_header', $data);
@@ -317,6 +344,9 @@ class Supply_Studio extends CI_Controller {
 			$this->load->model('businessModel');
 			$companyName = $this->businessModel->getFromBusiness("business_name", "business_id", $this->session->userdata('current_business'));
 			$data['companyName'] = $companyName;
+			$businesses = $this->businessModel->getBusinesses($email);
+
+			$data['businesses'] = $businesses;
 
 			$this->load->view('view_dash_header', $data);
 			$this->load->view('view_deleteSupplier', $data);
@@ -390,6 +420,9 @@ class Supply_Studio extends CI_Controller {
 			$data['history'] = "";
 			$data['support'] = "";
 			$data['companyName'] = $companyName;
+			$businesses = $this->businessModel->getBusinesses($email);
+
+			$data['businesses'] = $businesses;
 
 			$this->load->view('view_header', $data);
 			$this->load->view('view_dash_header', $data);
@@ -431,6 +464,9 @@ class Supply_Studio extends CI_Controller {
 
 			$companyName = $this->businessModel->getFromBusiness("business_name", "business_id", $this->session->userdata('current_business'));
 			$data['companyName'] = $companyName;
+			$businesses = $this->businessModel->getBusinesses($email);
+
+			$data['businesses'] = $businesses;
 
 			$this->load->view('view_dash_header', $data);
 			if($this->supplierModel->deleteSupplier($this->session->userdata('userId'))){
@@ -477,6 +513,9 @@ class Supply_Studio extends CI_Controller {
 
 			$companyName = $this->businessModel->getFromBusiness("business_name", "business_id", $this->session->userdata('current_business'));
 			$data['companyName'] = $companyName;
+			$businesses = $this->businessModel->getBusinesses($email);
+
+			$data['businesses'] = $businesses;
 
 			$this->load->view('view_dash_header', $data);
 			if($this->userModel->updateUserPassword($this->input->post('newPassword'), $this->session->userdata('userId'))){
@@ -763,7 +802,7 @@ class Supply_Studio extends CI_Controller {
 
 		$companyName = $this->businessModel->getFromBusiness("business_name", "business_id", $this->session->userdata('current_business'));
 
-		$products = $this->productModel->getProductsByBusiness($this->session->userdata('current_business'));
+		$products = $this->productModel->getProductsByBusiness($this->session->userdata('current_business')) ?: array();
 		$productsFormat = array();
 		foreach ($products as $product) {
 			$productsFormat[$product->product_id] = $product;
@@ -784,6 +823,9 @@ class Supply_Studio extends CI_Controller {
 		$data['products'] = $products;
 		$data['pendingOrders'] = $this->session->userdata('pending_orders');
 		$data['orders'] = $orders;
+		$businesses = $this->businessModel->getBusinesses($this->session->userdata('account_email'));
+
+		$data['businesses'] = $businesses;
 
 
 		$this->load->view('view_header', $data);
@@ -846,6 +888,9 @@ class Supply_Studio extends CI_Controller {
 		$data['coworkers'] = $coworkers;
 		$data['admin'] = $admin;
 		$data['plan'] = $plan;
+		$businesses = $this->businessModel->getBusinesses($this->session->userdata('account_email'));
+
+		$data['businesses'] = $businesses;
 
 		$this->load->view('view_header', $data);
 		$this->load->view('view_dash_header', $data);

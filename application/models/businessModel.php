@@ -60,7 +60,7 @@ class BusinessModel extends CI_Model {
   }
 
   public function getCoworkerNames($businessId) {
-    $query = $this->db->query("SELECT username FROM account WHERE account_email = (SELECT account_email FROM account_in_business WHERE business_id = '".$businessId."')");
+    $query = $this->db->query("SELECT username FROM account WHERE account_email IN (SELECT account_email FROM account_in_business WHERE business_id = '".$businessId."')");
 
     $table = array();
     if ($query->num_rows > 0) {
@@ -72,7 +72,7 @@ class BusinessModel extends CI_Model {
   }
 
   public function getBusinessAdmin($businessId) {
-    $query = $this->db->query("SELECT username FROM account WHERE account_email = (SELECT account_email FROM account_in_business WHERE business_id = '".$businessId."' AND admin = '1')");
+    $query = $this->db->query("SELECT username FROM account WHERE account_email IN (SELECT account_email FROM account_in_business WHERE business_id = '".$businessId."' AND admin = '1')");
 
     $table = array();
     if ($query->num_rows > 0) {
@@ -92,5 +92,17 @@ class BusinessModel extends CI_Model {
         return $row->subscription_level;
       }
     }
+  }
+
+  public function getBusinesses($email) {
+    $query = $this->db->query("SELECT * FROM business WHERE business_id IN (SELECT business_id FROM account_in_business WHERE account_email = '".$email."')");
+
+    $table = array();
+    if ($query->num_rows > 0) {
+      foreach ($query->result() as $row){
+        $table[$row->business_id] = $row;
+      }
+    }
+    return $table;
   }
 }
