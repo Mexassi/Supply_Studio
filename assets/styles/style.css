@@ -4859,14 +4859,16 @@ th a {
     outline: 0; }
     .dash-header-nav .dash-header-nav-business-name .dropdown:hover {
       background: #eee; }
-  .dash-header-nav .dash-header-nav-business-name .dropdown-menu li:hover {
-    background: #eee; }
-  .dash-header-nav .dash-header-nav-business-name .dropdown-menu form {
-    padding: 3px 20px; }
-  .dash-header-nav .dash-header-nav-business-name .dropdown-menu button {
-    background: none;
-    border: none;
-    padding: 0; }
+  .dash-header-nav .dash-header-nav-business-name .dropdown-menu {
+    min-width: 250px; }
+    .dash-header-nav .dash-header-nav-business-name .dropdown-menu li:hover {
+      background: #eee; }
+    .dash-header-nav .dash-header-nav-business-name .dropdown-menu form {
+      padding: 3px 20px; }
+    .dash-header-nav .dash-header-nav-business-name .dropdown-menu button {
+      background: none;
+      border: none;
+      padding: 0; }
 
 .dash-header-nav-icon {
   width: 20px;
