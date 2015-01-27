@@ -282,6 +282,7 @@ class Supply_Studio extends CI_Controller {
 			$data['title'] = "Edit Product";
 			$this->load->view('view_header', $data);
 			$this->load->model('userModel');
+			$this->load->model('businessModel');
 			$email = $this->session->userdata('account_email');
 			$data['email'] = $email;
 			$data['members'] = "";

@@ -34,3 +34,10 @@
     color: white;
   }
 }
+
+.introjs-button {
+  @extend .btn;
+  @extend .btn-primary;
+  text-shadow: none;
+  font: 14px/normal $font-family-sans-serif;
+}

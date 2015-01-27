@@ -30,6 +30,7 @@
     <li><a href="<?= base_url('products') ?>">Products</a></li>
   </ul>
   <ul class="dash-header-nav dash-header-nav--right">
+    <li><a id="tutorial" href="#" title="Tutorial" data-toggle="tooltip" data-placement="bottom"><svg class="dash-header-nav-icon icon-help"><use xlink:href="#icon-help"></use></svg></a></li>
     <li><a href="<?= base_url('logout') ?>" title="Logout" data-toggle="tooltip" data-placement="bottom"><svg class="dash-header-nav-icon icon-user"><use xlink:href="#icon-user"></use></svg></a></li>
     <li><a href="<?= base_url('settings') ?>" title="Settings" data-toggle="tooltip" data-placement="bottom"><svg class="dash-header-nav-icon icon-cog"><use xlink:href="#icon-cog"></use></svg></a></li>
   </ul>
