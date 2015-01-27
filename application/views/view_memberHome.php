@@ -2,7 +2,7 @@
 	<div class="row">
 		<ul class="dash-panel-list col-md-3 col-md-push-9">
 			<h1 class="h3">Quick Order</h1>
-			<?php for ($i = count($orders['rows']); $i > count($orders['rows']) - 3; $i--): ?>
+			<?php for ($i = count($orders['rows']); $i > max(count($orders['rows']) - 3, 0); $i--): ?>
 				<?php $order = $orders['rows'][$i-1] ?>
 				<li class="clearfix">
 					<a href="#">
