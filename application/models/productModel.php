@@ -46,6 +46,23 @@
 			return $table;
 		}
 
+		public function getProductsByBusiness($businessId) {
+			$query = $this->db->select('supplier_id')
+			->from('supplier')
+			->where('business_id', $businessId);
+
+			$suppliers = $query->get()->result_array();
+			$temp = array();
+			foreach ($suppliers as $supplier) {
+				array_push($temp, $supplier["supplier_id"]);
+			}
+			$suppliers = implode(',', $temp);
+
+			$query = $this->db->query('SELECT * FROM product WHERE supplier_id IN ('.$suppliers.')');
+
+			return $query->result();
+		}
+
 		public function getProductsBySupp($supplierId, $limit, $offset, $sortBy, $sortOrder, $suppName){
 			//validating sortBy and sortOrder variables using ternary logic to simplify code
 			$sortOrder = ($sortOrder == 'desc') ? "desc" : "asc";

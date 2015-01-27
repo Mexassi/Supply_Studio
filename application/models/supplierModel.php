@@ -45,7 +45,7 @@
 			$sortBy = (in_array($sortBy, $sortColumns)) ? $sortBy : "supplier_name";
 
 			//supplier list query
-			$query = $this->db->select('supplier_name, supplier_email, phone_no')
+			$query = $this->db->select('supplier_id, supplier_name, supplier_email, phone_no')
 			->from('supplier')
 			->where('business_id', $businessId)
 			->order_by($sortBy, $sortOrder);

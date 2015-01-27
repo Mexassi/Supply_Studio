@@ -755,16 +755,78 @@ class Supply_Studio extends CI_Controller {
 
 	public function orders() {
 		$data['title'] = "Orders";
-		$this->load->view('view_header', $data);
 		$this->load->model('userModel');
 		$this->load->model('businessModel');
-		$companyName = $this->businessModel->getFromBusiness("business_name", "business_id", $this->session->userdata('current_business'));
-		$data['companyName'] = $companyName;
+		$this->load->model('supplierModel');
+		$this->load->model('productModel');
+		$this->load->model('orderModel');
 
+		$companyName = $this->businessModel->getFromBusiness("business_name", "business_id", $this->session->userdata('current_business'));
+
+		$products = $this->productModel->getProductsByBusiness($this->session->userdata('current_business'));
+		$productsFormat = array();
+		foreach ($products as $product) {
+			$productsFormat[$product->product_id] = $product;
+		}
+		$products = $productsFormat;
+
+		$suppliers = $this->supplierModel->getSuppliers($this->session->userdata('current_business'), 'desc', 'supplier_name');
+		$suppliersFormat = array();
+		foreach ($suppliers['rows'] as $supplier) {
+			$suppliersFormat[$supplier['supplier_id']] = $supplier;
+		}
+		$suppliers = $suppliersFormat;
+
+		$orders = $this->orderModel->getOrders($this->session->userdata('current_business'));
+
+		$data['suppliers'] = $suppliers;
+		$data['companyName'] = $companyName;
+		$data['products'] = $products;
+		$data['pendingOrders'] = $this->session->userdata('pending_orders');
+		$data['orders'] = $orders;
+
+
+		$this->load->view('view_header', $data);
 		$this->load->view('view_dash_header', $data);
 		$this->load->view('view_order', $data);
 		$this->load->view('modals/add-order', $data);
 		$this->load->view('view_footer');
+	}
+
+	public function orderValidation() {
+		$this->load->library('form_validation');
+
+		// TODO: Form validation
+		if (empty($this->session->userdata('pending_orders'))) {
+			$this->session->set_userdata(array('pending_orders' => array()));
+		}
+		$pendingOrders = $this->session->userdata('pending_orders');
+		array_push($pendingOrders, array(
+			'id' => $this->input->post('product'),
+			'quantity' => $this->input->post('quantity'),
+			'note' => $this->input->post('note'),
+			'orderDate' => new DateTime(null)
+		));
+
+		$this->session->set_userdata(array('pending_orders' => $pendingOrders));
+
+		redirect('orders');
+	}
+
+	public function processAllOrders() {
+		$this->load->model('orderModel');
+
+		$username = explode("@",$this->session->userdata('account_email'));
+		$username = $username[0];
+		$pendingOrders = $this->session->userdata('pending_orders');
+
+		$insert = $this->orderModel->addOrders($pendingOrders, $username, $this->session->userdata('current_business'));
+
+		if ($insert == true) {
+			$this->session->set_userdata(array('pending_orders' => array()));
+		}
+
+		redirect('orders');
 	}
 
 	public function settings() {

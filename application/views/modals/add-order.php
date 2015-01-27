@@ -1,25 +1,27 @@
+<?php
+  $form = array('id' => 'addOrderForm', 'name' => 'addProductForm', 'class' => 'form-horizontal', 'role' => 'form');
+?>
+
 <div id="addOrderModal" class="modal-product-add modal fade" tabindex="-1" role="dialog">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">Add Order</div>
       <div class="modal-body">
-        <form id="addOrderForm" name="addProductForm" class="form-horizontal">
+        <?= form_open('orderValidation', $form) ?>
           <div class="form-group">
             <label for="product" class="col-sm-3 control-label">Product</label>
             <div class="col-sm-9">
               <select class="form-control" name="product">
-                <option>Product 1</option>
-                <option>Product 2</option>
-                <option>Product 3</option>
-                <option>Product 4</option>
-                <option>Product 5</option>
+                <?php foreach ($products as $product): ?>
+                  <option value="<?= $product->product_id ?>"><?= $product->product_name ?></option>
+                <?php endforeach ?>
               </select>
             </div>
           </div>
           <div class="form-group">
             <label for="quantity" class="col-sm-3 control-label">Quantity</label>
             <div class="col-sm-9">
-              <input type="number" class="form-control" name="quantity" placeholder="Quantity" />
+              <input type="number" class="form-control" name="quantity" placeholder="Quantity" min="0" />
             </div>
           </div>
           <div class="form-group">
@@ -33,7 +35,7 @@
       <div class="modal-footer">
         <span>Total: <strong>$1234.56</strong></span>
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary" form="addOrderForm">Add Order</button>
+        <button type="submit" class="btn btn-primary" form="addOrderForm">Add Order</button>
       </div>
     </div>
   </div>

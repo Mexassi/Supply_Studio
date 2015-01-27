@@ -1,8 +1,11 @@
 $(function() {
+  $('[data-toggle="tooltip"]').tooltip();
+  
   $('body').on('mouseenter mouseleave', 'table th', function() {
     $(this).parents('table').find('colgroup:eq('+$(this).index()+')').toggleClass('column-hover');
   })
 
+  $('#pendingOrdersTable').dynatable();
   $('#ordersTable').dynatable();
   $('#productsTable').dynatable();
   $('#suppliersTable').dynatable();
