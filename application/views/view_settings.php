@@ -11,7 +11,7 @@
           <label class="col-md-3 control-label">Colleagues</label>
           <div class="col-md-9">
             <?php foreach ($coworkers as $coworker): ?>
-              <div class="col-md-4"><svg class="dash-header-nav-icon icon-user"><use xlink:href="#icon-user"></use></svg><span><?= $coworker ?></span></div>
+              <div class="col-md-6"><svg class="dash-header-nav-icon icon-user"><use xlink:href="#icon-user"></use></svg><span><?= $coworker ?></span></div>
             <?php endforeach ?>
             <div class="clearfix"></div>
             <?php if ($admin == $username): ?>
