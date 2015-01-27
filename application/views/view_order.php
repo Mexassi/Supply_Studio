@@ -21,7 +21,7 @@
             <tr>
               <td><?= $i++ ?></td>
               <td><?= $products[$po['id']]->product_name ?></td>
-              <td><?= $suppliers[$products[$po['id']]->product_id]['supplier_name'] ?></td>
+              <td><?= $suppliers[$products[$po['id']]->supplier_id]['supplier_name'] ?></td>
               <td><?= $po['quantity'] ?></td>
               <td><?= '$'.number_format($po['quantity'] * $products[$po['id']]->product_price, 2)  ?></td>
               <td><?= $po['orderDate']->format('d/m/Y') ?></td>
@@ -60,7 +60,7 @@
           <tr class="order-table-row order-table-row--delivery">
             <td><?= $i++ ?></td>
             <td><?= $products[$orders['placement'][$order['order_id']]['product_id']]->product_name ?></td>
-            <td><?= $suppliers[$products[$orders['placement'][$order['order_id']]['product_id']]->product_id]['supplier_name'] ?></td>
+            <td><?= $suppliers[$products[$orders['placement'][$order['order_id']]['product_id']]->supplier_id]['supplier_name'] ?></td>
             <td><?= $orders['placement'][$order['order_id']]['quantity'] ?></td>
             <td><?= '$'.number_format($orders['placement'][$order['order_id']]['quantity'] * $products[$orders['placement'][$order['order_id']]['product_id']]->product_price, 2)  ?></td>
             <td><?= date_format(new DateTime($order['placement_date']), 'd/m/Y') ?></td>

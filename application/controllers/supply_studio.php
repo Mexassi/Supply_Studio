@@ -75,18 +75,34 @@ class Supply_Studio extends CI_Controller {
 		if($this->session->userdata('isLoggedIn')){
 			$this->load->model('userModel');
 			$this->load->model('businessModel');
+			$this->load->model('orderModel');
+			$this->load->model('productModel');
+			$this->load->model('supplierModel');
 
 			$email = $this->session->userdata('account_email');
 			$currentBusiness = $this->session->userdata('current_business');
 			$companyName = $this->businessModel->getFromBusiness("business_name", "business_id", $currentBusiness);
 			$businesses = $this->businessModel->getBusinesses($email);
+			$orders = $this->orderModel->getOrders($this->session->userdata('current_business'));
+			$products = $this->productModel->getProductsByBusiness($this->session->userdata('current_business')) ?: array();
+			$productsFormat = array();
+			foreach ($products as $product) {
+				$productsFormat[$product->product_id] = $product;
+			}
+			$products = $productsFormat;
+			$suppliers = $this->supplierModel->getSuppliers($this->session->userdata('current_business'), 'desc', 'supplier_name');
+			$suppliersFormat = array();
+			foreach ($suppliers['rows'] as $supplier) {
+				$suppliersFormat[$supplier['supplier_id']] = $supplier;
+			}
+			$suppliers = $suppliersFormat;
 
 			$data['title'] = "Dashboard | Supply Studio";
 			$data['email'] = $email;
 			$data['members'] = "active";
-			$data['orders'] = "";
-			$data['supplier'] = "";
-			$data['products'] = "";
+			$data['orders'] = $orders;
+			$data['suppliers'] = $suppliers;
+			$data['products'] = $products;
 			$data['history'] = "";
 			$data['support'] = "";
 			$data['companyName'] = $companyName;

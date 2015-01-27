@@ -1,12 +1,12 @@
 <nav class="dash-header">
-  <a href="#" class="dash-logo-link" title="Company Settings">
+  <a href="<?= base_url('settings') ?>" class="dash-logo-link" title="Company Settings">
     <img class="dash-logo" src="<?= base_url('assets/images/logo.png'); ?>" alt="Logo">
     <svg class="dash-header-nav-icon icon-cog"><use xlink:href="#icon-cog"></use></svg>
   </a>
   <ul class="dash-header-nav">
     <li id="businessName" class="dash-header-nav-business-name">
       <div class="dropdown">
-        <button id="dLabel" class="btn-dropdown" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <button id="dLabel" class="btn-dropdown" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="Switch Businesses">
           <?= stripslashes($companyName);?>
           <span class="caret"></span>
         </button>

@@ -4927,6 +4927,14 @@ th a {
     color: white;
     text-decoration: none; }
 
+.dash-panel-list .quick-pending-orders-link--done {
+  color: #ccc; }
+  .dash-panel-list .quick-pending-orders-link--done:before {
+    background: #eee; }
+  .dash-panel-list .quick-pending-orders-link--done:hover {
+    background: #eee;
+    color: #ccc; }
+
 .order-table-row--arrival {
   color: #ccc; }
 

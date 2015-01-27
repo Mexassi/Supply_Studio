@@ -42,3 +42,16 @@
     text-decoration: none;
   }
 }
+
+.dash-panel-list .quick-pending-orders-link--done {
+  color: #ccc;
+
+  &:before {
+    background: #eee;
+  }
+
+  &:hover {
+    background: #eee;
+    color: #ccc;
+  }
+}

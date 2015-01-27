@@ -37,7 +37,8 @@ class OrderModel extends CI_Model {
     $query = $this->db->select('*')
     ->from('orders')
     ->where('business_id', $businessId)
-    ->order_by('placement_date', 'asc');
+    ->order_by('placement_date', 'desc')
+    ->order_by('order_id', 'desc');
 
     $table['rows'] = $query->get()->result_array();
 
